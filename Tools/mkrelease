@@ -34,7 +34,7 @@ while getopts "cdpu" flag; do
 done
 shift $(( OPTIND - 1 ))
 
-ANNO="Obsidian Discogs Vault Version ${VERSION} Release ${RELEASE}"
+ANNO="Obsidian Custom Discogs Vault, Version ${VERSION} Release ${RELEASE}"
 
 gh release create v${VERSION}r${RELEASE} ${DRAFT} \
                   --title "${ANNO}" \
