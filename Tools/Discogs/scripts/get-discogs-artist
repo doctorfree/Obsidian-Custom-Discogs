@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# get-discogs-artist
+#
+# Get a Discogs artist profile
+artist_id=272144
+
+# Get a Discogs API token
+[ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
+
+[ "${DISCOGS_TOKEN}" ] || {
+  echo "Discogs API token required"
+  echo "Set DISCOGS_USER and DISCOGS_TOKEN in ${HOME}/.config/mpprc"
+  echo "Exiting."
+  exit 1
+}
+
+URL="https://api.discogs.com"
+ART="${URL}/artists"
+
+AGE="github.com/doctorfree/MusicPlayerPlus"
+UAG="--user-agent \"MusicPlayerPlus/3.0\""
+REL="${URL}/artists/${artist_id}/releases?year"
+
+[ -d json ] || mkdir json
+
+# Retrieve artist profile
+artist=$(curl --stderr /dev/null \
+  -A "${AGE}" "${ART}/${artist_id}" \
+  -H "Accept: application/vnd.discogs.v2.plaintext+json" \
+  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+  jq -r '.')
+
+# Retrieve artist releases
+releases=$(curl --stderr /dev/null \
+  -A "${AGE}" "${REL}" \
+  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+  jq -r '.')
+
+echo "${artist}" > "json/artist_${artist_id}.json"
+echo "${releases}" > "json/releases_${artist_id}.json"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd ..
+
+find assets -type f | while read asset
+do
+  gasset=`echo "${asset}" | sed -e "s/\[/\\\\\[/g" -e "s/\]/\\\\\]/g"`
+  found=$(find -L . -path ./.git -prune -o ! -type d -print0 | xargs -0 grep -l "${gasset}")
+  [ "${found}" ] || echo "${asset}"
+done

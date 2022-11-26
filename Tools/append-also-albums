@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# append-also-albums
+#
+# Append a "See also" section to album markdown including links to albums
+# by the same artist in other media types folders
+#
+# Use a "-l" argument to specify list what you would do but don't do it
+
+HERE=`pwd`
+TOP=`dirname "${HERE}"`
+
+cd "${TOP}"
+
+LIST=
+[ "$1" == "-l" ] && LIST=1
+
+for artistdir in */*
+do
+  [ "${artistdir}" == "*/*" ] && continue
+  [ -d "${artistdir}" ] || continue
+  artist=`basename "${artistdir}"`
+  folder=`dirname "${artistdir}"`
+  numalbums=`ls -1 */"${artist}"/*.md | wc -l`
+  [ ${numalbums} -gt 1 ] && {
+    cd "${artistdir}"
+    echo "Appending see also for ${artist} in ${folder}"
+    for album in *.md
+    do
+      [ "${album}" == "*.md" ] && continue
+      grep -i "See also" "${album}" > /dev/null || {
+        if [ "${LIST}" ]
+        then
+          echo "Adding See also to ${artistdir}/${album}"
+        else
+          echo "" >> ${album}
+          echo "## See also" >> ${album}
+          echo "" >> ${album}
+        fi
+        for aalbum in *.md
+        do
+          [ "${aalbum}" == "*.md" ] && continue
+          [ "${aalbum}" == "${album}" ] && continue
+          title=`grep "title:" ${aalbum} | awk -F ':' ' { print $2 } ' | \
+            sed -e 's/^ *//' -e 's/ *$//'`
+          if [ "${LIST}" ]
+          then
+            echo "Adding ${aalbum} link to ${artistdir}/${album}"
+          else
+            echo "- [${title}](${aalbum})" >> ${album}
+          fi
+        done
+      }
+    done
+  }
+  cd "${TOP}"
+done

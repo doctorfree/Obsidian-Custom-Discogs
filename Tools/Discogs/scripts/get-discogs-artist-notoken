@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# get-discogs-artist
+#
+# Get a Discogs artist profile
+artist_id=272144
+
+URL="https://api.discogs.com"
+ART="${URL}/artists"
+
+AGE="github.com/doctorfree/MusicPlayerPlus"
+UAG="--user-agent \"MusicPlayerPlus/3.0\""
+REL="${URL}/artists/${artist_id}/releases?year"
+
+[ -d json ] || mkdir json
+
+# Retrieve artist profile
+artist=$(curl --stderr /dev/null \
+  -A "${AGE}" "${ART}/${artist_id}" \
+  -H "Accept: application/vnd.discogs.v2.plaintext+json" | \
+  jq -r '.')
+
+# Retrieve artist releases
+releases=$(curl --stderr /dev/null \
+  -A "${AGE}" "${REL}" | \
+  jq -r '.')
+
+echo "${artist}" > "json/artist_${artist_id}.json"
+echo "${releases}" > "json/releases_${artist_id}.json"

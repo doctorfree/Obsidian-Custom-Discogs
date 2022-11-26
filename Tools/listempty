@@ -1,0 +1,38 @@
+#!/bin/bash
+
+cd ..
+
+REMOVE=
+[ "$1" == "-r" ] && REMOVE=1
+for artist in */*
+do
+  [ "${artist}" == "*/*" ] && continue
+  [ -d "${artist}" ] || continue
+  cd "${artist}"
+  removedir=
+  for album in *.md
+  do
+    [ "${album}" == "*.md" ] && {
+      if [ -f ".md" ]
+      then
+        if [ "${REMOVE}" ]
+        then
+          echo "Removing ${artist}/.md"
+          rm -f ".md"
+        else
+          echo "${artist} has untitled '.md' file"
+        fi
+      else
+        if [ "${REMOVE}" ]
+        then
+          echo "Removing empty ${artist} folder"
+          removedir=1
+        else
+          echo "${artist} appears to be empty"
+        fi
+      fi
+    }
+  done
+  cd ../..
+  [ "${removedir}" ] && rmdir "${artist}" 
+done

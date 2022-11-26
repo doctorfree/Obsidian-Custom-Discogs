@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# get-discogs-folders
+#
+# Get your Discogs collection folders
+
+# Get to the Discogs username and a Discogs API token
+[ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
+
+[ "${DISCOGS_USER}" ] && [ "${DISCOGS_TOKEN}" ] || {
+  echo "Discogs username and API token are required"
+  echo "Set DISCOGS_USER and DISCOGS_TOKEN in ${HOME}/.config/mpprc"
+  echo "Exiting."
+  exit 1
+}
+
+URL="https://api.discogs.com"
+USR="${URL}/users/${DISCOGS_USER}"
+FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
+
+AGE="github.com/doctorfree/MusicPlayerPlus"
+
+[ -d json ] || mkdir json
+
+# Retrieve collection folders
+folders=$(curl --stderr /dev/null \
+  -A "${AGE}" "${FDR}" \
+  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+  jq -r '.')
+
+echo "${folders}" > "json/${DISCOGS_USER}_folders.json"

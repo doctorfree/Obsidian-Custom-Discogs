@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# get-discogs-releases
+#
+# Get your Discogs collection "All" folder items
+#
+# Valid sort keys are:
+# label
+# artist
+# title
+# catno
+# format
+# rating
+# added
+# year
+#     Parameters
+#     username
+#         string (required) Example: rodneyfool
+#         The username of the collection you are trying to request.
+#     folder_id
+#         number (required) Example: 3
+#         The ID of the folder to request.
+#     sort
+#         string (optional) Example: artist
+#         Sort items by this field (see below for all valid sort keys.
+#     sort_order
+#         string (optional) Example: desc
+#         Sort items in a particular order (asc or desc)
+
+# Get to the Discogs username and a Discogs API token
+[ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
+
+[ "${DISCOGS_USER}" ] && [ "${DISCOGS_TOKEN}" ] || {
+  echo "Discogs username and API token are required"
+  echo "Set DISCOGS_USER and DISCOGS_TOKEN in ${HOME}/.config/mpprc"
+  echo "Exiting."
+  exit 1
+}
+
+URL="https://api.discogs.com"
+USR="${URL}/users/${DISCOGS_USER}"
+FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
+
+AGE="github.com/doctorfree/MusicPlayerPlus"
+
+[ -d json ] || mkdir json
+
+# Retrieve collection folder
+releases=$(curl --stderr /dev/null \
+  -A "${AGE}" "${FDR}/0/releases?page=20" \
+  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+  jq -r '.')
+
+echo "${releases}" > "json/${DISCOGS_USER}_releases_20.json"

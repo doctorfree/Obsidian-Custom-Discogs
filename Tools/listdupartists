@@ -1,0 +1,24 @@
+#!/bin/bash
+
+OUT="Tools"
+
+cd ..
+
+declare -a artists=()
+
+for artist in */*
+do
+  [ "${artist}" == "*/*" ] && continue
+  [ -d "${artist}" ] || continue
+  lowerartist=`echo "${artist}" | tr '[:upper:]' '[:lower:]'`
+  artists+=("${lowerartist}")
+done
+
+rm -f "${OUT}/lowerartistlist.txt"
+touch "${OUT}/lowerartistlist.txt"
+for i in "${artists[@]}"
+do
+  echo "$i" >> "${OUT}/lowerartistlist.txt"
+done
+
+sort "${OUT}/lowerartistlist.txt" | uniq -D > "${OUT}/dupartists.txt"
