@@ -1,9 +1,3 @@
----
-banner: "assets/banners/Obsidian-Banner.png"
-banner_x: 0.5
-banner_y: 0.5
----
-
 # Obsidian Discogs Vault
 
 This repository is organized as an Obsidian vault designed to add media descriptions from a Discogs collection in markdown format. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
