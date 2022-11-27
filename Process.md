@@ -43,11 +43,10 @@ DISCOGS_USER=your_discogs_username
 DISCOGS_TOKEN="your_discogs_api_token"
 ```
 
-After configuring your Discogs username and API token, generate markdown for your Discogs collection by running the following commands:
+After configuring your Discogs username and API token, generate markdown for your Discogs collection by running the `Setup.sh` script:
 
 ```console
-cd Tools/Discogs
-./mkdiscogs -a
+./Setup.sh
 ```
 
 The resulting markdown and cover art can be found in the `username` and `assets` folders where `username` is your capitalized Discogs username.
@@ -60,11 +59,10 @@ See the script [Tools/Discogs/artists2markdown](Tools/Discogs/artists2markdown.m
 
 ## Updates
 
-Updating the vault with new markdown for items or artists added to your Discogs collection is supported by the above scripts. Automation for this task has been coded in the `Tools/Discogs/albums2markdown` and `Tools/Discogs/artists2markdown` scripts. To update the Discogs markdown and cover art with newly added entries to a Discogs collection, simply rerun the scripts with the '-U' or '-F' option ('-U' is faster, '-F' regenerates all Discogs markdown):
+Updating the vault with new markdown for items or artists added to your Discogs collection is supported by the above scripts. Automation for this task has been coded in the `Tools/Discogs/albums2markdown` and `Tools/Discogs/artists2markdown` scripts. To update the Discogs markdown and cover art with newly added entries to a Discogs collection, simply rerun the `Setup.sh` script with the '-U' or '-F' option ('-U' is faster, '-F' regenerates all Discogs markdown):
 
 ```console
-cd Tools/Discogs
-./mkdiscogs -a -U
+./Setup.sh -U
 ```
 
 ## See_also
