@@ -60,6 +60,14 @@ Alternately, the Discogs username and API token can be specified on the command 
 
 The resulting markdown and cover art can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username. Multiple Discogs collections from different Discogs users can be converted to markdown in the vault by running the `Setup.sh` script multiple times with different `-u username` arguments.
 
+For example, to generate markdown for the items and artists in Discogs user Dr_Robert's collection, run the following:
+
+```console
+./Setup.sh -u Dr_Robert
+```
+
+The resulting markdown and cover art can be found in the `Dr_Robert` and `assets` folders.
+
 **[Note:]** For large Discogs collections this process can take a while.
 
 ## Usage

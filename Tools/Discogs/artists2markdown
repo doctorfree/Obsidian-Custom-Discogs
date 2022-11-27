@@ -104,7 +104,6 @@ ASSETS="${GRANDP}/assets"
 ARTISTS="${ASSETS}/artists"
 OUT="${GRANDP}/Discogs_${VAULT}_Artists.md"
 
-# URL="https://api.discogs.com/releases"
 URL="https://api.discogs.com"
 ART="${URL}/artists"
 

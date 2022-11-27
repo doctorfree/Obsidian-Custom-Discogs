@@ -425,34 +425,34 @@ make_release_markdown() {
         cp "${markdown}" "${TOP}/${artistname}/${markdown}"
         rm -f "${markdown}"
       }
-    done < <(/bin/cat "json/releases/releases_$1.json" | jq -r '.releases[].id')
+    done < <(/bin/cat "json/releases_${DISCOGS_USER}/releases_$1.json" | jq -r '.releases[].id')
 }
 
 [ -d json ] || mkdir json
-[ -d json/releases ] || mkdir json/releases
+[ -d json/releases_${DISCOGS_USER} ] || mkdir json/releases_${DISCOGS_USER}
 
 # Get the first page and set pages
 page=1
 [ "${overwrite}" ] && {
-  rm -f "json/releases/releases_${page}.json"
+  rm -f "json/releases_${DISCOGS_USER}/releases_${page}.json"
 }
-[ -s "json/releases/releases_${page}.json" ] || {
+[ -s "json/releases_${DISCOGS_USER}/releases_${page}.json" ] || {
   if [ "${DISCOGS_TOKEN}" ]
   then
     curl --stderr /dev/null \
       -A "${AGE}" "${FDR}/0/releases?page=${page}" \
       -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
-      jq -r '.' > "json/releases/releases_${page}.json"
+      jq -r '.' > "json/releases_${DISCOGS_USER}/releases_${page}.json"
     sleep 1
   else
     curl --stderr /dev/null \
       -A "${AGE}" "${FDR}/0/releases?page=${page}" \
-      jq -r '.' > "json/releases/releases_${page}.json"
+      jq -r '.' > "json/releases_${DISCOGS_USER}/releases_${page}.json"
     sleep 2.4
   fi
 }
-[ -s "json/releases/releases_${page}.json" ] && {
-  pages=`cat "json/releases/releases_${page}.json" | jq -r '.pagination.pages'`
+[ -s "json/releases_${DISCOGS_USER}/releases_${page}.json" ] && {
+  pages=`cat "json/releases_${DISCOGS_USER}/releases_${page}.json" | jq -r '.pagination.pages'`
   printf "\nRelease page ${page}/${pages} "
   make_release_markdown ${page}
 }
@@ -463,24 +463,24 @@ page=1
   while true
   do
     [ "${overwrite}" ] && {
-      rm -f "json/releases/releases_${page}.json"
+      rm -f "json/releases_${DISCOGS_USER}/releases_${page}.json"
     }
-    [ -s "json/releases/releases_${page}.json" ] || {
+    [ -s "json/releases_${DISCOGS_USER}/releases_${page}.json" ] || {
       if [ "${DISCOGS_TOKEN}" ]
       then
         curl --stderr /dev/null \
           -A "${AGE}" "${FDR}/0/releases?page=${page}" \
           -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
-          jq -r '.' > "json/releases/releases_${page}.json"
+          jq -r '.' > "json/releases_${DISCOGS_USER}/releases_${page}.json"
         sleep 1
       else
         curl --stderr /dev/null \
           -A "${AGE}" "${FDR}/0/releases?page=${page}" \
-          jq -r '.' > "json/releases/releases_${page}.json"
+          jq -r '.' > "json/releases_${DISCOGS_USER}/releases_${page}.json"
         sleep 2.4
       fi
     }
-    [ -s "json/releases/releases_${page}.json" ] && {
+    [ -s "json/releases_${DISCOGS_USER}/releases_${page}.json" ] && {
       printf "\nRelease page ${page}/${pages} "
       make_release_markdown ${page}
     }

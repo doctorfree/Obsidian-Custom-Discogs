@@ -49,7 +49,15 @@ After configuring your Discogs username and API token, generate markdown for you
 ./Setup.sh
 ```
 
-The resulting markdown and cover art can be found in the `username` and `assets` folders where `username` is your capitalized Discogs username.
+The resulting markdown and cover art can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username.
+
+If you wish to generate markdown from another Discogs user, run the `Setup.sh` script with the `-u user` option. For example, to generate markdown for the items and artists in Discogs user Dr_Robert's collection, run the following:
+
+```console
+./Setup.sh -u Dr_Robert
+```
+
+The resulting markdown and cover art can be found in the `Dr_Robert` and `assets` folders.
 
 **[Note:]** For large Discogs collections this process can take a while.
 
