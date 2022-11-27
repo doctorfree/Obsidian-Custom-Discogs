@@ -23,12 +23,44 @@ Other Obsidian vaults I have curated and made public include:
 
 ## Table of Contents
 
+- [Setup](#setup)
 - [Usage](#usage)
 - [Dataview](#dataview)
 - [Discogs](#discogs)
 - [Process](#process)
 - [Obsidian Plugins](#obsidian_plugins)
 - [See also](#see_also)
+
+## Setup
+
+The Discogs API requires a Discogs username and, optionally, a Discogs API token. These can be found in your Discogs account and placed in the file `$HOME/.config/mpprc` as follows:
+
+```shell
+# The Discogs username can be found by visiting discogs.com. Login, use the
+# dropdown of your user icon in the upper right corner, click on 'Profile'.
+# Your Discogs username is the last component of the profile URL. IF you do
+# not have a Discogs account, leave blank.
+DISCOGS_USER=your_discogs_username
+# The Discogs API token can be found by visiting
+# https://www.discogs.com/settings/developers
+DISCOGS_TOKEN="your_discogs_api_token"
+```
+
+After configuring your Discogs username and API token, generate markdown for your Discogs collection by running the `Setup.sh` script:
+
+```console
+./Setup.sh
+```
+
+Alternately, the Discogs username and API token can be specified on the command line:
+
+```console
+./Setup.sh -u username -t token
+```
+
+The resulting markdown and cover art can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username. Multiple Discogs collections from different Discogs users can be converted to markdown in the vault by running the `Setup.sh` script multiple times with different `-u username` arguments.
+
+**[Note:]** For large Discogs collections this process can take a while.
 
 ## Usage
 

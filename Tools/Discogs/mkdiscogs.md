@@ -24,6 +24,7 @@ usage() {
   printf "\n\t-U indicates perform an update of the Discogs collection"
   printf "\n\t-f indicates overwrite any pre-existing username index markdown"
   printf "\n\t-t 'token' specifies the Discogs API token"
+  printf "\n\t\t(token='none' indicates no token should be used)"
   printf "\n\t-u 'user' specifies the Discogs username"
   printf "\n\t-h displays this usage message and exits\n\n"
   exit 1
@@ -75,16 +76,22 @@ shift $(( OPTIND - 1 ))
 DUSER="${DISCOGS_USER^}"
 TOP="${VAULT}/${DUSER}"
 
+tokenopt="-N"
+[ "${DISCOGS_TOKEN}" ] && [ "${DISCOGS_TOKEN}" != "none" ] && {
+  tokenopt="-t ${DISCOGS_TOKEN}"
+}
+
 [ "${all}" ] && {
-  [ -x ./albums2markdown ] && ./albums2markdown ${updateopt}
-  [ -x ./artists2markdown ] && ./artists2markdown ${updateopt}
-  [ -x ./get-discogs-profile ] && ./get-discogs-profile
+  [ -x ./albums2markdown ] && ./albums2markdown ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
+  [ -x ./artists2markdown ] && ./artists2markdown ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
+  [ -x ./get-discogs-profile ] && ./get-discogs-profile ${tokenopt} -u ${DISCOGS_USER}
   if [ "${sortorder}" == "title" ]
   then
     [ -x ./mkdiscogs ] && ./mkdiscogs -A
   else
     [ -x ./mkdiscogs ] && ./mkdiscogs -T
   fi
+  # TODO: Use templates for the dataview markdown, generate for each Discogs user
   for mdown in "${VAULT}"/Dataviews/*.md "${VAULT}"/*.md
   do
     [ "${mdown}" == "${VAULT}/Dataviews/*.md" ] && continue

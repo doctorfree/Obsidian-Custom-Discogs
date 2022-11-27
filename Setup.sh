@@ -6,6 +6,7 @@
 
 URL="https://api.discogs.com"
 AGE="github.com/doctorfree/MusicPlayerPlus"
+UPD=
 
 [ -x Tools/Discogs/mkdiscogs ] || {
   echo "Tools/Discogs/mkdiscogs does not exist or is not executable."
@@ -16,6 +17,34 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
 
 # Get the Discogs username and a Discogs API token
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
+
+usage() {
+  printf "\nUsage: ./Setup.sh [-U] [-t token] [-u user] [-h]"
+  printf "\nWhere:"
+  printf "\n\t-U indicates perform an update of the Discogs collection"
+  printf "\n\t-t 'token' specifies the Discogs API token"
+  printf "\n\t-u 'user' specifies the Discogs username"
+  printf "\n\t-h displays this usage message and exits\n\n"
+  exit 1
+}
+
+while getopts "Ut:u:h" flag; do
+    case $flag in
+        U)
+            UPD="-U"
+            ;;
+        t)
+            DISCOGS_TOKEN="${OPTARG}"
+            ;;
+        u)
+            DISCOGS_USER="${OPTARG}"
+            ;;
+        h)
+            usage
+            ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
 [ "${DISCOGS_USER}" ] || {
   printf "\nDiscogs username required but none found in ~/.config/mpprc"
@@ -37,8 +66,6 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
                }
           if [ "${DISCOGS_USER}" ]
           then
-            [ -d "${HOME}/.config" ] || mkdir "${HOME}/.config"
-            echo "DISCOGS_USER=${DISCOGS_USER}" >> "${HOME}/.config/mpprc"
             break
           else
             numtries=$((numtries + 1))
@@ -77,8 +104,6 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
                }
           if [ "${DISCOGS_TOKEN}" ]
           then
-            [ -d "${HOME}/.config" ] || mkdir "${HOME}/.config"
-            echo "DISCOGS_TOKEN=${DISCOGS_TOKEN}" >> "${HOME}/.config/mpprc"
             break
           else
             numtries=$((numtries + 1))
@@ -96,4 +121,4 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
 }
 
 cd Tools/Discogs
-./mkdiscogs -a
+./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD}

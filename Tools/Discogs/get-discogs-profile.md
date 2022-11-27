@@ -10,9 +10,48 @@
 # Get to the Discogs username and a Discogs API token
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
-[ "${DISCOGS_USER}" ] && [ "${DISCOGS_TOKEN}" ] || {
-  echo "Discogs username and API token are required"
-  echo "Set DISCOGS_USER and DISCOGS_TOKEN in ${HOME}/.config/mpprc"
+usage() {
+  printf "\nUsage: ./get-discogs-profile [-N] [-t token] [-u user] [-h]"
+  printf "\nWhere:"
+  printf "\n\t-N indicates do not use Discogs API token"
+  printf "\n\t-t 'token' specifies the Discogs API token"
+  printf "\n\t-u 'user' specifies the Discogs username"
+  printf "\n\t-h displays this usage message and exits\n\n"
+  exit 1
+}
+
+usetoken=1
+while getopts "Nt:u:h" flag; do
+    case $flag in
+        N)
+            usetoken=
+            ;;
+        t)
+            DISCOGS_TOKEN="${OPTARG}"
+            ;;
+        u)
+            DISCOGS_USER="${OPTARG}"
+            ;;
+        h)
+            usage
+            ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+[ "${DISCOGS_USER}" ] || {
+  echo "Discogs username required"
+  echo "Set DISCOGS_USER in ${HOME}/.config/mpprc"
+  echo "Exiting."
+  exit 1
+}
+
+[ "${DISCOGS_TOKEN}" ] || usetoken=
+[ "${usetoken}" ] || DISCOGS_TOKEN=
+
+[ "${DISCOGS_TOKEN}" ] && [ "${usetoken}" ] || {
+  echo "Discogs API token required"
+  echo "Set DISCOGS_TOKEN in ${HOME}/.config/mpprc"
   echo "Exiting."
   exit 1
 }
@@ -22,19 +61,27 @@ DUSER="${DISCOGS_USER^}"
 URL="https://api.discogs.com"
 USR="${URL}/users/${DISCOGS_USER}"
 VAL="${URL}/users/${DISCOGS_USER}/collection/value"
-
 AGE="github.com/doctorfree/MusicPlayerPlus"
-UAG="--user-agent \"MusicPlayerPlus/3.0\""
 
 # Retrieve user profile
-profile=$(curl --stderr /dev/null \
-  -A "${AGE}" "${USR}" \
-  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
-  jq -r '.')
+if [ "${usetoken}" ]
+then
+  profile=$(curl --stderr /dev/null \
+    -A "${AGE}" "${USR}" \
+    -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+    jq -r '.')
+else
+  profile=$(curl --stderr /dev/null \
+    -A "${AGE}" "${USR}" \
+    jq -r '.')
+fi
 
 avatar_url=`echo ${profile} | jq '.avatar_url' | sed -e "s/\"//g"`
 wget -q -O "${DISCOGS_USER}_discogs_avatar.jpg" "${avatar_url}"
-convert "${DISCOGS_USER}_discogs_avatar.jpg" "${DISCOGS_USER}_discogs_avatar.png"
+[ -f "${DISCOGS_USER}_discogs_avatar.jpg" ] && {
+  convert "${DISCOGS_USER}_discogs_avatar.jpg" \
+          "${DISCOGS_USER}_discogs_avatar.png" 2> /dev/null
+}
 rm -f "${DISCOGS_USER}_discogs_avatar.jpg"
 
 # Retrieve collection value fields
@@ -98,5 +145,8 @@ echo "- **Discogs Seller Rating Stars:** ${seller_rating_stars}" >> "${filename}
 echo "" >> "${filename}"
 
 mv "${filename}" ../..
-mv ${DISCOGS_USER}_discogs_avatar.png ../../assets/${DISCOGS_USER}_discogs_avatar.png
+[ -f ${DISCOGS_USER}_discogs_avatar.png ] && {
+  mv ${DISCOGS_USER}_discogs_avatar.png \
+     ../../assets/${DISCOGS_USER}_discogs_avatar.png
+}
 ```

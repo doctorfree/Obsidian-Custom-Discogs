@@ -32,9 +32,10 @@ DISCOGS_TOKEN=
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc
 
 usage() {
-  printf "\nUsage: artists2markdown [-F] [-R] [-U] [-u username] [-t token] [-h]"
+  printf "\nUsage: artists2markdown [-F] [-N] [-R] [-U] [-u username] [-t token] [-h]"
   printf "\nWhere:"
   printf "\n\t-F indicates force overwrite of previously generated files."
+  printf "\n\t-N indicates do not use a Discogs API token."
   printf "\n\t-R indicates remove previously generated files."
   printf "\n\t-U indicates run an update, only newly added Discogs artists will be processed."
   printf "\n\t-u 'username' specifies your Discogs username."
@@ -57,11 +58,15 @@ numcols=1
 overwrite=
 remove=
 update=
+usetoken=1
 # Command line arguments override config file settings
-while getopts "FRUu:t:h" flag; do
+while getopts "FNRUu:t:h" flag; do
     case $flag in
         F)
             overwrite=1
+            ;;
+        N)
+            usetoken=
             ;;
         R)
             remove=1
@@ -82,6 +87,7 @@ while getopts "FRUu:t:h" flag; do
 done
 shift $(( OPTIND - 1 ))
 
+[ "${usetoken}" ] || DISCOGS_TOKEN=
 [ "${overwrite}" ] && update=
 
 [ "${DISCOGS_USER}" ] || {
