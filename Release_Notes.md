@@ -83,9 +83,9 @@ The Obsidian Custom Discogs vault includes the `Doctorfree` Obsidian theme. Enab
 
 Obsidian is required for some features but is not necessary to view the Obsidian Custom Discogs vault. Any markdown viewer/editor can be used. If the Obsidian Custom Discogs vault is extracted into a website folder, it can be viewed using most browsers.
 
-### Discogs Queries
+### Dataview Queries
 
-The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Discogs Queries](https://github.com/doctorfree/Obsidian-Custom-Discogs/Discogs_Queries.md) document.
+The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](https://github.com/doctorfree/Obsidian-Custom-Discogs/Dataview_Queries.md) document.
 
 ## Customization
 

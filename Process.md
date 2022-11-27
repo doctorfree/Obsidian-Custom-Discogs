@@ -28,7 +28,7 @@ In addition to the standard Linux utilities, the download and conversion tools r
 
 ## Discogs_Collection
 
-Automation for generating markdown from a user's [Discogs](https://discogs.com) collection has been implemented in the `Tools/Discogs/albums2markdown` and `Tools/Discogs/artists2markdown` scripts. These scripts use the Discogs API to retrieve album/artist data and generate the markdown and cover art for all items and artists in a user's Discogs collection.
+Automation for generating markdown from a user's [Discogs](https://discogs.com) collection has been implemented in the `Tools/Discogs/mkdiscogs`, `Tools/Discogs/albums2markdown` and `Tools/Discogs/artists2markdown` scripts. These scripts use the Discogs API to retrieve album/artist data and generate the markdown and cover art for all items and artists in a user's Discogs collection.
 
 The Discogs API requires a Discogs username and, optionally, a Discogs API token. These can be found in your Discogs account and placed in the file `$HOME/.config/mpprc` as follows:
 
@@ -53,13 +53,15 @@ The resulting markdown and cover art can be found in the `username` and `assets`
 
 **[Note:]** For large Discogs collections this process can take a while.
 
+See the script [Tools/Discogs/mkdiscogs](Tools/Discogs/mkdiscogs.md):
+
 See the script [Tools/Discogs/albums2markdown](Tools/Discogs/albums2markdown.md):
 
 See the script [Tools/Discogs/artists2markdown](Tools/Discogs/artists2markdown.md):
 
 ## Updates
 
-Updating the vault with new markdown for items or artists added to your Discogs collection is supported by the above scripts. Automation for this task has been coded in the `Tools/Discogs/albums2markdown` and `Tools/Discogs/artists2markdown` scripts. To update the Discogs markdown and cover art with newly added entries to a Discogs collection, simply rerun the `Setup.sh` script with the '-U' or '-F' option ('-U' is faster, '-F' regenerates all Discogs markdown):
+Updating the vault with new markdown for items or artists added to your Discogs collection is supported by the above scripts. Automation for this task has been coded in the automation scripts. To update the Discogs markdown and cover art with newly added entries to a Discogs collection, simply rerun the `Setup.sh` script with the '-U' or '-F' option ('-U' is faster, '-F' regenerates all Discogs markdown):
 
 ```console
 ./Setup.sh -U
@@ -68,4 +70,4 @@ Updating the vault with new markdown for items or artists added to your Discogs 
 ## See_also
 
 - [README](README.md)
-- [Discogs Queries](Discogs_Queries.md)
+- [Dataview Queries](Dataview_Queries.md)

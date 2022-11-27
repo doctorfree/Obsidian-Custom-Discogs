@@ -74,7 +74,7 @@ The resulting markdown and cover art can be found in the `Username` and `assets`
 
 ## Dataview
 
-The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Discogs Queries](Discogs_Queries.md) document.
+The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](Dataview_Queries.md) document.
 
 Additional visual representations of the Custom Discogs Vault, also based upon Dataview queries, are provided by the [Excalibrain](https://github.com/zsviczian/excalibrain) Obsidian plugin.
 
@@ -106,5 +106,5 @@ Obsidian community plugins we have found useful and can recommend include the fo
 
 ## See_also
 
-- [Discogs Queries](Discogs_Queries.md)
+- [Dataview Queries](Dataview_Queries.md)
 - [Process](Process.md)

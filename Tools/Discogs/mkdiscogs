@@ -88,16 +88,18 @@ tokenopt="-N"
   else
     [ -x ./mkdiscogs ] && ./mkdiscogs -T
   fi
-  # TODO: Use templates for the dataview markdown, generate for each Discogs user
-  for mdown in "${VAULT}"/Dataviews/*.md "${VAULT}"/*.md
+  for mdown in "${VAULT}"/assets/templates/Dataviews/*.md \
+               "${VAULT}"/assets/templates/*.md
   do
-    [ "${mdown}" == "${VAULT}/Dataviews/*.md" ] && continue
-    [ "${mdown}" == "${VAULT}/*.md" ] && continue
-    grep __USERNAME__ "${mdown}" > /dev/null && {
-      cat "${mdown}" | sed -e "s/__USERNAME__/${DUSER}/g" > /tmp/md$$
-      cp /tmp/md$$ "${mdown}"
-      rm -f /tmp/md$$
-    }
+    [ "${mdown}" == "${VAULT}/assets/templates/Dataviews/*.md" ] && continue
+    [ "${mdown}" == "${VAULT}/assets/templates/*.md" ] && continue
+    base=`basename "${mdown}"`
+    path=`dirname "${mdown}"`
+    opath=`echo "${path}" | sed -e "s%/assets/templates%%"`
+    [ -d "${opath}" ] || mkdir -p "${opath}"
+    cat "${mdown}" | sed -e "s/__USERNAME__/${DUSER}/g" > /tmp/md$$
+    cp /tmp/md$$ "${opath}/${DUSER}_${base}"
+    rm -f /tmp/md$$
   done
 }
 
