@@ -3,6 +3,7 @@
 ## Table of contents
 
 1. [Overview](#overview)
+1. [Quickstart](#quickstart)
 1. [Installation](#installation)
 1. [Configuration](#configuration)
 1. [Customization](#customization)
@@ -19,7 +20,15 @@ The `Obsidian-Custom-Discogs` repository can be used to automate the generation 
 An example Obsidian vault, my [Obsidian Discogs Vault](https://github.com/doctorfree/Obsidian-Discogs-Vault#readme), created using these tools can be downloaded and viewed at https://github.com/doctorfree/Obsidian-Discogs-Vault/releases/latest (it's quite large).
 
 
-These are the release notes for Version 1.0.1 Release 2 of the Obsidian Custom Discogs vault. The primary new feature in this release is support for multiple Discogs users in the same vault.
+These are the release notes for Version 1.0.1 Release 3 of the Obsidian Custom Discogs vault. The primary new feature in this release is support for multiple Discogs users in the same vault.
+
+## Quickstart
+
+1. [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.1r3.tar.gz)
+2. Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.1r3.tar.gz`
+3. Set the Discogs username (`DISCOGS_USER`) and API token (`DISCOGS_TOKEN`) in `$HOME/.config/mpprc`
+4. Customize the vault by running `./Setup` in the vault folder
+5. Open the vault in Obsidian via "Open another vault -> Open folder as vault"
 
 ## Installation
 
@@ -27,7 +36,7 @@ The Obsidian Custom Discogs vault can be installed on Windows, Mac, or Linux. Th
 
 **For the optimal experience, open this vault in Obsidian!**
 
-1. [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.1r2.tar.gz)
+1. [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.1r3.tar.gz)
 3. Open the vault in Obsidian via "Open another vault -> Open folder as vault"
 4. Trust us. :) 
 5. When Obsidian opens the settings, verify that the "Dataview", "Excalidraw", and "Excalibrain" plugins are enabled
@@ -40,8 +49,8 @@ The Obsidian Custom Discogs vault can be installed on Windows, Mac, or Linux. Th
 Those familiar with `wget` can download this release from the command line with:
 
 ```shell
-wget --quiet -O ~/Downloads/Obsidian-Custom-Discogs-v1.0.1r2.tar.gz \
-  https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.1r2.tar.gz
+wget --quiet -O ~/Downloads/Obsidian-Custom-Discogs-v1.0.1r3.tar.gz \
+  https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.1r3.tar.gz
 ```
 
 ### Extract the release archive
@@ -52,35 +61,45 @@ To extract the ZIP archive:
 
 ```shell
 cd /path/to/your/vaults # e.g. `cd ~/Documents/Obsidian`
-unzip /path/to/Obsidian-Custom-Discogs-1.0.1r2.zip
+unzip /path/to/Obsidian-Custom-Discogs-1.0.1r3.zip
 ```
 
 To extract the compressed tar archive:
 
 ```shell
 cd /path/to/your/vaults # e.g. `cd ~/Documents`
-tar xf /path/to/Obsidian-Custom-Discogs-1.0.1r2.tar.gz
+tar xf /path/to/Obsidian-Custom-Discogs-1.0.1r3.tar.gz
 ```
 
-Once extracted, the Obsidian Custom Discogs vault is now available in `/path/to/your/vaults/Obsidian-Custom-Discogs-1.0.1r2/`.
+Once extracted, the Obsidian Custom Discogs vault is now available in `/path/to/your/vaults/Obsidian-Custom-Discogs-1.0.1r3/`.
 
 The downloaded archive can be deleted:
 
 ```shell
-rm -f /path/to/Obsidian-Custom-Discogs-1.0.1r2.zip
+rm -f /path/to/Obsidian-Custom-Discogs-1.0.1r3.zip
 ```
 
 or
 
 ```shell
-rm -f /path/to/Obsidian-Custom-Discogs-1.0.1r2.tar.gz
+rm -f /path/to/Obsidian-Custom-Discogs-1.0.1r3.tar.gz
 ```
+
+### Clone the repository
+
+Alternatively, this repository can be cloned with the command:
+
+```console
+git clone https://github.com/doctorfree/Obsidian-Custom-Discogs.git
+```
+
+Cloning will get all of the latest changes including those made since the latest release.
 
 ## Configuration
 
 The Obsidian Custom Discogs vault is pre-configured for use with [Obsidian](https://obsidian.md). Install Obsidian for your platform by clicking the appropriate installation link at the Obsidian website. Obsidian is available for Windows, Mac, and Linux as well as mobile devices.
 
-Add a new vault in Obsidian with `Open folder as vault` and navigate to the `Obsidian-Custom-Discogs-1.0.1r2` extracted folder. When prompted, `Trust` and enable the `Dataview` plugin if it is not already enabled.
+Add a new vault in Obsidian with `Open folder as vault` and navigate to the `Obsidian-Custom-Discogs-1.0.1r3` extracted folder. When prompted, `Trust` and enable the `Dataview` plugin if it is not already enabled.
 
 The Obsidian Custom Discogs vault includes the `Doctorfree` Obsidian theme. Enable this Obsidian theme in Obsidian by visiting `Settings -> Appearance` and selecting `Doctorfree` from the dropdown in the `Themes` section.
 
@@ -131,7 +150,7 @@ To remove the Obsidian Custom Discogs vault simply remove the extracted folder a
 
 ```shell
 cd /path/to/your/vaults # e.g. `cd ~/Documents/Obsidian`
-rm -rf Obsidian-Custom-Discogs-1.0.1r2
+rm -rf Obsidian-Custom-Discogs-1.0.1r3
 ```
 
 ## Support
@@ -142,4 +161,4 @@ Support the development and improvement of the Obsidian Custom Discogs vault by 
 
 ## Changelog
 
-View the full changelog for this release at https://github.com/doctorfree/Obsidian-Custom-Discogs/blob/v1.0.1r2/CHANGELOG.md
+View the full changelog for this release at https://github.com/doctorfree/Obsidian-Custom-Discogs/blob/v1.0.1r3/CHANGELOG.md

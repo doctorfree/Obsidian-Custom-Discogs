@@ -17,6 +17,7 @@ Other Obsidian vaults I have curated and made public include:
 
 ## Table of Contents
 
+- [Quickstart](#quickstart)
 - [Setup](#setup)
 - [Usage](#usage)
 - [Dataview](#dataview)
@@ -25,6 +26,14 @@ Other Obsidian vaults I have curated and made public include:
 - [Screenshots](#screenshots)
 - [Obsidian Plugins](#obsidian_plugins)
 - [See also](#see_also)
+
+## Quickstart
+
+1. [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.1r3.tar.gz)
+2. Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.1r3.tar.gz`
+3. Set the Discogs username (`DISCOGS_USER`) and API token (`DISCOGS_TOKEN`) in `$HOME/.config/mpprc`
+4. Customize the vault by running `./Setup` in the vault folder
+5. Open the vault in Obsidian via "Open another vault -> Open folder as vault"
 
 ## Setup
 
