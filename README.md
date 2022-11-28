@@ -62,7 +62,7 @@ For example, to generate markdown for the items and artists in Discogs user Dr_R
 
 The resulting markdown and cover art can be found in the `Dr_Robert` and `assets` folders.
 
-**[Note:]** For large Discogs collections this process can take a while.
+**[Note:]** For large Discogs collections this process can take a while. Discogs throttles API requests to prevent denial of service attacks. I have tried to minimize API requests where possible but if you see any way to further optimize please [open an issue](https://github.com/doctorfree/Obsidian-Custom-Discogs/issues).
 
 ## Usage
 
