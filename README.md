@@ -22,6 +22,7 @@ Other Obsidian vaults I have curated and made public include:
 - [Dataview](#dataview)
 - [Discogs](#discogs)
 - [Process](#process)
+- [Screenshots](#screenshots)
 - [Obsidian Plugins](#obsidian_plugins)
 - [See also](#see_also)
 
@@ -89,6 +90,20 @@ The Obsidian Custom Discogs vault markdown contains metadata with tags allowing 
 ## Process
 
 See the [Process](Process.md) document for a detailed description of the tools and process used to generate this vault.
+
+## Screenshots
+
+### Example album release generated markdown
+
+![](assets/Album-Info-One.png)
+
+![](assets/Album-Info-Two.png)
+
+### Example artist profile generated markdown
+
+![](assets/Artist-Info-One.png)
+
+![](assets/Artist-Info-Two.png)
 
 ## Obsidian_Plugins
 

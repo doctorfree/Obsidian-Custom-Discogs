@@ -91,7 +91,7 @@ GROUP BY "**" + artist + "**"
 ```
 
 - [Index of the Discogs Vault](../__USERNAME___Discogs_Index.md)
-- [Discogs Vault Dataview Queries](../__USERNAME___Discogs_Queries.md)
+- [Dataview Queries](../__USERNAME___Dataview_Queries.md)
 - [Discogs User Profile](../__USERNAME___Discogs_User_Profile.md)
 - [README](../README.md)
 - [Process](../Process.md)
