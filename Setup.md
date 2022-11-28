@@ -22,8 +22,9 @@ UPD=
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
 usage() {
-  printf "\nUsage: ./Setup [-U] [-t token] [-u user] [-h]"
+  printf "\nUsage: ./Setup [-R] [-U] [-t token] [-u user] [-h]"
   printf "\nWhere:"
+  printf "\n\t-R indicates remove intermediate JSON created during previous run"
   printf "\n\t-U indicates perform an update of the Discogs collection"
   printf "\n\t-t 'token' specifies the Discogs API token"
   printf "\n\t-u 'user' specifies the Discogs username"
@@ -31,8 +32,12 @@ usage() {
   exit 1
 }
 
-while getopts "Ut:u:h" flag; do
+cleanup=
+while getopts "RUt:u:h" flag; do
     case $flag in
+        R)
+            cleanup=1
+            ;;
         U)
             UPD="-U"
             ;;
@@ -48,6 +53,12 @@ while getopts "Ut:u:h" flag; do
     esac
 done
 shift $(( OPTIND - 1 ))
+
+[ "${cleanup}" ] && {
+  echo "Cleaning up any previously created JSON used in generating markdown"
+  rm -rf Tools/Discogs/json
+  exit 0
+}
 
 have_curl=`type -p curl`
 have_jq=`type -p jq`
