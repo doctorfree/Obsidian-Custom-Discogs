@@ -18,7 +18,8 @@ The `Obsidian-Custom-Discogs` repository can be used to automate the generation 
 
 An example Obsidian vault, my [Obsidian Discogs Vault](https://github.com/doctorfree/Obsidian-Discogs-Vault#readme), created using these tools can be downloaded and viewed at https://github.com/doctorfree/Obsidian-Discogs-Vault/releases/latest (it's quite large).
 
-These are the release notes for Version 1.0.1 Release 1 of the Obsidian Custom Discogs vault.
+
+These are the release notes for Version 1.0.1 Release 1 of the Obsidian Custom Discogs vault. The primary new feature in this release is support for multiple Discogs users in the same vault.
 
 ## Installation
 
