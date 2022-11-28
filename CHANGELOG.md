@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 1.0.1 Release 2
+
+* Upgrade Doctorfree Obsidian theme
+* Change references to 'album' metadata to 'title' in dataview queries
+* Second pass at getting the filenames and links correct per user
+* Check for curl and jq in Setup
+* Fix generated Dataviews index
+* Improve User Profile generated markdown
+
 ## Version 1.0.1 Release 1
 
 * Fixed support for multiple Discogs users in the same vault
