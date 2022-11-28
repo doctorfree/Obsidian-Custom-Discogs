@@ -87,9 +87,9 @@ tokenopt="-N"
   [ -x ./get-discogs-profile ] && ./get-discogs-profile ${tokenopt} -u ${DISCOGS_USER}
   if [ "${sortorder}" == "title" ]
   then
-    [ -x ./mkdiscogs ] && ./mkdiscogs -A
+    [ -x ./mkdiscogs ] && ./mkdiscogs -A ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
   else
-    [ -x ./mkdiscogs ] && ./mkdiscogs -T
+    [ -x ./mkdiscogs ] && ./mkdiscogs -T ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
   fi
   for mdown in "${VAULT}"/assets/templates/Dataviews/*.md \
                "${VAULT}"/assets/templates/*.md

@@ -1,6 +1,9 @@
+# Setup
+
+```shell
 #!/bin/bash
 #
-# Setup.sh
+# Setup
 #
 # Setup the Custom Discogs vault with markdown from the user Discogs collection
 
@@ -10,7 +13,7 @@ UPD=
 
 [ -x Tools/Discogs/mkdiscogs ] || {
   echo "Tools/Discogs/mkdiscogs does not exist or is not executable."
-  echo "The Setup.sh script must be run in the Obsidian-Custom-Discogs folder."
+  echo "The Setup script must be run in the Obsidian-Custom-Discogs folder."
   echo "Exiting without performing custom setup."
   exit 1
 }
@@ -19,7 +22,7 @@ UPD=
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
 usage() {
-  printf "\nUsage: ./Setup.sh [-U] [-t token] [-u user] [-h]"
+  printf "\nUsage: ./Setup [-U] [-t token] [-u user] [-h]"
   printf "\nWhere:"
   printf "\n\t-U indicates perform an update of the Discogs collection"
   printf "\n\t-t 'token' specifies the Discogs API token"
@@ -122,3 +125,4 @@ shift $(( OPTIND - 1 ))
 
 cd Tools/Discogs
 ./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD}
+```

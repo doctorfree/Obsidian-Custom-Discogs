@@ -111,7 +111,6 @@ URL="https://api.discogs.com"
 ART="${URL}/artists"
 
 AGE="github.com/doctorfree/MusicPlayerPlus"
-UAG="--user-agent \"MusicPlayerPlus/3.0\""
 
 [ -d "${TOP}" ] || mkdir -p "${TOP}"
 

@@ -40,24 +40,24 @@ DISCOGS_USER=your_discogs_username
 DISCOGS_TOKEN="your_discogs_api_token"
 ```
 
-After configuring your Discogs username and API token, generate markdown for your Discogs collection by running the `Setup.sh` script:
+After configuring your Discogs username and API token, generate markdown for your Discogs collection by running the `Setup` script:
 
 ```console
-./Setup.sh
+./Setup
 ```
 
 Alternately, the Discogs username and API token can be specified on the command line:
 
 ```console
-./Setup.sh -u username -t token
+./Setup -u username -t token
 ```
 
-The resulting markdown and cover art can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username. Multiple Discogs collections from different Discogs users can be converted to markdown in the vault by running the `Setup.sh` script multiple times with different `-u username` arguments.
+The resulting markdown and cover art can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username. Multiple Discogs collections from different Discogs users can be converted to markdown in the vault by running the `Setup` script multiple times with different `-u username` arguments.
 
 For example, to generate markdown for the items and artists in Discogs user Dr_Robert's collection, run the following:
 
 ```console
-./Setup.sh -u Dr_Robert
+./Setup -u Dr_Robert
 ```
 
 The resulting markdown and cover art can be found in the `Dr_Robert` and `assets` folders.
