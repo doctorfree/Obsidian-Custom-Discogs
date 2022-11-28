@@ -46,6 +46,35 @@ while getopts "Ut:u:h" flag; do
 done
 shift $(( OPTIND - 1 ))
 
+have_curl=`type -p curl`
+have_jq=`type -p jq`
+
+[ "${have_curl}" ] || {
+  printf "\nThe 'curl' utility is required but not found in this user's execution path."
+  printf "\nVerify that 'curl' is installed and available on this system, add it to PATH,"
+  printf "\nor install 'curl'. On most Linux systems 'curl' can be installed with either:"
+  printf "\n\tsudo apt install curl"
+  printf "\nor"
+  printf "\n\tsudo dnf install curl"
+  printf "\nOn Mac OS 'curl' can be installed with Homebrew:"
+  printf "\n\tbrew install curl\n"
+}
+[ "${have_jq}" ] || {
+  printf "\nThe 'jq' utility is required but not found in this user's execution path."
+  printf "\nVerify that 'jq' is installed and available on this system, add it to PATH,"
+  printf "\nor install 'jq'. On most Linux systems 'jq' can be installed with either:"
+  printf "\n\tsudo apt install jq"
+  printf "\nor"
+  printf "\n\tsudo dnf install jq"
+  printf "\nOn Mac OS 'jq' can be installed with Homebrew:"
+  printf "\n\tbrew install jq\n"
+}
+
+[ "${have_jq}" ] && [ "${have_curl}" ] || {
+  printf "\nSystem requirements not met. Exiting without performing setup.\n"
+  exit 1
+}
+
 [ "${DISCOGS_USER}" ] || {
   printf "\nDiscogs username required but none found in ~/.config/mpprc"
   printf "\nThe Discogs username can be found by visiting discogs.com. Login then"

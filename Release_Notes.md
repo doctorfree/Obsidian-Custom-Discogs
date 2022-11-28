@@ -101,7 +101,7 @@ The Discogs API requires a Discogs username and, optionally, a Discogs API token
 # dropdown of your user icon in the upper right corner, click on 'Profile'.
 # Your Discogs username is the last component of the profile URL. IF you do
 # not have a Discogs account, leave blank.
-DISCOGS_USER=your_discogs_username
+DISCOGS_USER="your_discogs_username"
 # The Discogs API token can be found by visiting
 # https://www.discogs.com/settings/developers
 DISCOGS_TOKEN="your_discogs_api_token"
