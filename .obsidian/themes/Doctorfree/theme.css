@@ -1668,6 +1668,10 @@ pre[class*=language-] {
 /*        ---                          */
 /*                                     */
 /***************************************/
+
+.table-view-table tr {
+  border-bottom: 1px solid;
+}
 th {
   font-weight: 800 !important;
 }

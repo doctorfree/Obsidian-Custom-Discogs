@@ -42,7 +42,7 @@ The above album metadata can be used to perform Dataview queries to search, filt
 ````markdown
 ```dataview
 TABLE WITHOUT ID
-  link(file.link, album) as Album,
+  link(file.link, title) as Album,
   artist AS "Artist",
   year AS "Year"
 FROM ""
@@ -55,7 +55,7 @@ The above Dataview code block produces the following output:
 
 ```dataview
 TABLE WITHOUT ID
-  link(file.link, album) as Album,
+  link(file.link, title) as Album,
   artist AS "Artist",
   year AS "Year"
 FROM ""
@@ -67,7 +67,7 @@ As a list grouped by artist rather than a table, the following dataview codebloc
 
 ````markdown
 ```dataview
-LIST link(rows.file.link, rows.album)
+LIST link(rows.file.link, rows.title)
 FROM ""
 WHERE (artist = "Yes" OR artist = "XTC") AND
       year < 1990
@@ -78,7 +78,7 @@ GROUP BY "**" + artist + "**"
 Would list all albums by Yes or XTC released prior to 1990:
 
 ```dataview
-LIST link(rows.file.link, rows.album)
+LIST link(rows.file.link, rows.title)
 FROM ""
 WHERE (artist = "Yes" OR artist = "XTC") AND
       year < 1990

@@ -278,10 +278,10 @@ do
       [ "${artistname}" ] && {
         if [ ${numcols} -gt 4 ]
         then
-          printf "| [${artistname}](Discogs/${artist}/${artistpage}.md) |\n" >> ${OUT}
+          printf "| [${artistname}](${VAULT}/${artist}/${artistpage}.md) |\n" >> ${OUT}
           numcols=1
         else
-          printf "| [${artistname}](Discogs/${artist}/${artistpage}.md) " >> ${OUT}
+          printf "| [${artistname}](${VAULT}/${artist}/${artistpage}.md) " >> ${OUT}
           numcols=$((numcols+1))
         fi
       }

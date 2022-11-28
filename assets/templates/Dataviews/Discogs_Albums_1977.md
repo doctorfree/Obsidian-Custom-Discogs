@@ -12,10 +12,10 @@ This code displays all albums from the __USERNAME__ folder released in 1977 sort
 ```dataview
 TABLE WITHOUT ID
   artist AS "Artist",
-  link(file.link, album) as Album,
+  link(file.link, title) as Album,
   year AS "Year"
 FROM "__USERNAME__"
-WHERE artist != null AND album != null AND year = 1977
+WHERE artist != null AND title != null AND year = 1977
 SORT artist ASC
 ```
 ````
@@ -25,9 +25,9 @@ Output of above code:
 ```dataview
 TABLE WITHOUT ID
   artist AS "Artist",
-  link(file.link, album) as Album,
+  link(file.link, title) as Album,
   year AS "Year"
 FROM "__USERNAME__"
-WHERE artist != null AND album != null AND year = 1977
+WHERE artist != null AND title != null AND year = 1977
 SORT artist ASC
 ```
