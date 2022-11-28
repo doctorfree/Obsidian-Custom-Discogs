@@ -10,12 +10,12 @@ The Obsidian Custom Discogs vault markdown contains metadata with tags allowing 
 
 ## Example Dataview Queries
 
-- [Discogs_Albums](Discogs_Albums.md)
-- [Discogs_Albums_1977](Discogs_Albums_1977.md)
-- [Discogs_Albums_70s](Discogs_Albums_70s.md)
-- [Discogs_Art_Rock](Discogs_Art_Rock.md)
-- [Discogs_Progressive](Discogs_Progressive.md)
-- [Discogs_Reissue](Discogs_Reissue.md)
+- [Discogs_Albums](__USERNAME___Discogs_Albums.md)
+- [Discogs_Albums_1977](__USERNAME___Discogs_Albums_1977.md)
+- [Discogs_Albums_70s](__USERNAME___Discogs_Albums_70s.md)
+- [Discogs_Art_Rock](__USERNAME___Discogs_Art_Rock.md)
+- [Discogs_Progressive](__USERNAME___Discogs_Progressive.md)
+- [Discogs_Reissue](__USERNAME___Discogs_Reissue.md)
 
 ## Example Dataview Discogs Query
 
@@ -90,6 +90,8 @@ WHERE (artist = "Yes" OR artist = "XTC") AND
 GROUP BY "**" + artist + "**"
 ```
 
-- [Index of the Media Vault](../Media_Index.md)
+- [Index of the Discogs Vault](../__USERNAME___Discogs_Index.md)
+- [Discogs Vault Dataview Queries](../__USERNAME___Discogs_Queries.md)
+- [Discogs User Profile](../__USERNAME___Discogs_User_Profile.md)
 - [README](../README.md)
 - [Process](../Process.md)
