@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.0.1 Release 3
+
+* Add Quickstart section to README and Release Notes
+* Add -R option to Setup to remove intermediate JSON from previous run
+
 ## Version 1.0.1 Release 2
 
 * Upgrade Doctorfree Obsidian theme
