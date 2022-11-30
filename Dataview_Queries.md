@@ -6,7 +6,13 @@ banner_y: 1.0
 
 # Dataview Queries
 
-The Obsidian Discogs Vault markdown contains metadata with tags allowing a variety of queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/). A few example Dataview queries are detailed below.
+The Obsidian Discogs Vault markdown contains metadata with tags allowing a variety of queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/). Example Dataview queries are detailed below. Several more Dataview queries are auto-generated during the `Setup` process and can be found in the `Dataviews` folder after initialization with `Setup`.
+
+## Table of Contents
+
+- [Table of Albums Released after 2000](#table)
+- [List of Albums Released after 2000](#list)
+- [See also](#see_also)
 
 ## Example Dataview Queries
 
@@ -14,7 +20,9 @@ Included here are [several examples](Dataviews/Dataviews.md) of utilizing the Ob
 
 ### Example Dataview Query
 
-The markdown for "Fragile" by Yes has the following YAML prelude:
+Generated markdown for albums in a Discogs user collectin or local music library contains a YAML format metadata prelude. Metadata properties defined in this prelude can be used to filter the Obsidian vault items using the Dataview plugin.
+
+For example, the markdown for "Fragile" by Yes has the following YAML prelude:
 
 ```yaml
 ---
@@ -35,9 +43,9 @@ notes:
 ---
 ```
 
-#### Dataview query
+### Table
 
-The above album metadata can be used to perform Dataview queries to search, filter, and retrieve albums as if they are in a database. For example, to produce a table of all albums in this vault by Yes released prior to 1980 add the following to a markdown file in the vault:
+The album metadata can be used to perform Dataview queries to search, filter, and retrieve albums as if they are in a database. For example, to produce a table of all albums in this vault released after 2000, add the following to a markdown file in the vault:
 
 ````markdown
 ```dataview
@@ -46,7 +54,7 @@ TABLE WITHOUT ID
   artist AS "Artist",
   year AS "Year"
 FROM ""
-WHERE artist = "Yes" and year < 1980
+WHERE year > 2000
 SORT year ASC
 ```
 ````
@@ -59,9 +67,11 @@ TABLE WITHOUT ID
   artist AS "Artist",
   year AS "Year"
 FROM ""
-WHERE artist = "Yes" and year < 1980
+WHERE year > 2000
 SORT year ASC
 ```
+
+### List
 
 As a list grouped by artist rather than a table, the following dataview codeblock:
 
@@ -69,23 +79,21 @@ As a list grouped by artist rather than a table, the following dataview codebloc
 ```dataview
 LIST link(rows.file.link, rows.title)
 FROM ""
-WHERE (artist = "Yes" OR artist = "XTC") AND
-      year < 1990
+WHERE year > 2000
 GROUP BY "**" + artist + "**"
 ```
 ````
 
-Would list all albums by Yes or XTC released prior to 1990:
+Would list all albums released after 2000:
 
 ```dataview
 LIST link(rows.file.link, rows.title)
 FROM ""
-WHERE (artist = "Yes" OR artist = "XTC") AND
-      year < 1990
+WHERE year > 2000
 GROUP BY "**" + artist + "**"
 ```
 
-## See also
+## See_also
 
 - [README](README.md)
 - [Process](Process.md)

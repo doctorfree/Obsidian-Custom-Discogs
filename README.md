@@ -1,19 +1,10 @@
 # Obsidian Discogs Vault
 
-This repository is organized as an Obsidian vault designed to generate artist/album descriptions from a Discogs collection or local music library. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
+**Automate the generation of a collection of markdown format files with detailed descriptions of Discogs user collections and local music libraries.**
 
-The `Obsidian-Custom-Discogs` repository is a stripped down version of the `Obsidian-Discogs-Vault` repository, omitting the pre-generated markdown from my personal Discogs collection while retaining the structure and scripts used to generate a Discogs collection vault. See the [description of Process](Process.md) for an overview of the process and tools employed in the use of this repository.
+This repository is organized as an Obsidian vault designed to generate artist/album/track descriptions from a Discogs collection or a local music library. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
 
-Other Obsidian vaults I have curated and made public include:
-
-- [Obsidian Beets Vault](https://github.com/doctorfree/Obsidian-Beets-Vault)
-- [Obsidian Books Vault](https://github.com/doctorfree/Obsidian-Books-Vault)
-- [Obsidian CD Vault](https://github.com/doctorfree/Obsidian-CD-Vault)
-- [Obsidian Discogs Vault](https://github.com/doctorfree/Obsidian-Discogs-Vault)
-- [Obsidian Roon Vault](https://github.com/doctorfree/Obsidian-Roon-Vault)
-- [Obsidian Vinyl Vault](https://github.com/doctorfree/Obsidian-Vinyl-Vault)
-- [Obsidian Media Vault](https://github.com/doctorfree/Obsidian-Media-Vault)
-- [Pokemon Markdown Vault](https://github.com/doctorfree/Pokedex-Markdown)
+See the [description of Process](Process.md) for an overview of the process and tools employed in the use of this repository.
 
 ## Table of Contents
 
@@ -152,3 +143,14 @@ Obsidian community plugins we have found useful and can recommend include the fo
 
 - [Dataview Queries](Dataview_Queries.md)
 - [Process](Process.md)
+
+Other Obsidian vaults I have curated and made public include:
+
+- [Obsidian Beets Vault](https://github.com/doctorfree/Obsidian-Beets-Vault)
+- [Obsidian Books Vault](https://github.com/doctorfree/Obsidian-Books-Vault)
+- [Obsidian CD Vault](https://github.com/doctorfree/Obsidian-CD-Vault)
+- [Obsidian Discogs Vault](https://github.com/doctorfree/Obsidian-Discogs-Vault)
+- [Obsidian Roon Vault](https://github.com/doctorfree/Obsidian-Roon-Vault)
+- [Obsidian Vinyl Vault](https://github.com/doctorfree/Obsidian-Vinyl-Vault)
+- [Obsidian Media Vault](https://github.com/doctorfree/Obsidian-Media-Vault)
+- [Pokemon Markdown Vault](https://github.com/doctorfree/Pokedex-Markdown)
