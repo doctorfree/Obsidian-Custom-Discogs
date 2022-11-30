@@ -130,28 +130,28 @@ make_release_markdown() {
       }
     }
 
-    [ -d "${OUT}/${releaseid}" ] || mkdir -p "${OUT}/${releaseid}"
+    [ -d "${RELOUT}/${releaseid}" ] || mkdir -p "${RELOUT}/${releaseid}"
     [ "${overwrite}" ] && {
-      rm -f "${OUT}/${releaseid}/${releaseid}.json"
+      rm -f "${RELOUT}/${releaseid}/${releaseid}.json"
     }
-    [ -s "${OUT}/${releaseid}/${releaseid}.json" ] || {
+    [ -s "${RELOUT}/${releaseid}/${releaseid}.json" ] || {
       curl --stderr /dev/null \
         -A "${AGE}" "${REL}/${releaseid}" \
         -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
-        jq -r '.' > "${OUT}/${releaseid}/${releaseid}.json"
+        jq -r '.' > "${RELOUT}/${releaseid}/${releaseid}.json"
       sleep 1
     }
 
-    [ -s "${OUT}/${releaseid}/${releaseid}_genres.json" ] || {
-      cat "${OUT}/${releaseid}/${releaseid}.json" | jq -r '.genres[]?' > \
-        "${OUT}/${releaseid}/${releaseid}_genres.json"
+    [ -s "${RELOUT}/${releaseid}/${releaseid}_genres.json" ] || {
+      cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.genres[]?' > \
+        "${RELOUT}/${releaseid}/${releaseid}_genres.json"
     }
-    [ -s "${OUT}/${releaseid}/${releaseid}_styles.json" ] || {
-      cat "${OUT}/${releaseid}/${releaseid}.json" | jq -r '.styles[]?' > \
-        "${OUT}/${releaseid}/${releaseid}_styles.json"
+    [ -s "${RELOUT}/${releaseid}/${releaseid}_styles.json" ] || {
+      cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.styles[]?' > \
+        "${RELOUT}/${releaseid}/${releaseid}_styles.json"
     }
 
-    title=`cat "${OUT}/${releaseid}/${releaseid}.json" | jq -r '.title'`
+    title=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.title'`
     titlename=`echo ${title} | \
                sed -e "s% %_%g" \
                    -e "s%,%_%g" \
@@ -167,7 +167,7 @@ make_release_markdown() {
                    -e "s%'%%g" \
                    -e "s%/%-%g"`
 
-    artist=`cat "${OUT}/${releaseid}/${releaseid}.json" | \
+    artist=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
       jq -r '.artists[0].name' | sed -e 's/ ([[:digit:]]\+)//'`
     artistname=`echo ${artist} | \
                 sed -e "s% %_%g" \
@@ -189,7 +189,7 @@ make_release_markdown() {
 
     [ "${overwrite}" ] && rm -f "${coverfolder}/${filename}.png"
     [ -f "${coverfolder}/${filename}.png" ] || {
-      coverurl=$(cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      coverurl=$(cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
         jq -r '.images[0].resource_url')
       suffix=`echo "${coverurl}" | awk -F '/' ' { print $NF } ' | \
                                    awk -F '.' ' { print $NF } '`
@@ -211,7 +211,7 @@ make_release_markdown() {
       [ -f "${TOP}/${artistname}/${markdown}" ] && generate=
     }
     [ "${generate}" ] && {
-      label=`cat "${OUT}/${releaseid}/${releaseid}.json" | jq -r '.labels[].name'`
+      label=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.labels[].name'`
 
       echo "Generating markdown for ${artist} / ${title}"
       echo "---" > "${markdown}"
@@ -219,9 +219,9 @@ make_release_markdown() {
       echo "artist: ${artist}" >> "${markdown}"
       echo "label: ${label}" >> "${markdown}"
 
-      formats=`cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      formats=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
                jq -r '.formats[]?' | jq -r '.name'`
-      cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
                jq -r '.formats[]?' | \
                jq -r '.descriptions[]?' > "${releaseid}_formats.txt"
 
@@ -250,7 +250,7 @@ make_release_markdown() {
         else
           genres="${genres}, ${genre}"
         fi
-      done < <(/bin/cat "${OUT}/${releaseid}/${releaseid}_genres.json")
+      done < <(/bin/cat "${RELOUT}/${releaseid}/${releaseid}_genres.json")
 
       while read style
       do
@@ -258,14 +258,14 @@ make_release_markdown() {
         [ "${style}" == "null" ] && style=
         [ "${style}" ] || continue
         genres="${genres}, ${style}"
-      done < <(/bin/cat "${OUT}/${releaseid}/${releaseid}_styles.json")
+      done < <(/bin/cat "${RELOUT}/${releaseid}/${releaseid}_styles.json")
       echo "genres: ${genres}" >> "${markdown}"
 
-      rating=`cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      rating=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
         jq '.community.rating.average'`
       echo "rating: ${rating}" >> "${markdown}"
 
-      released=`cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      released=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
         jq -r '.released'`
       echo "released: ${released}" >> "${markdown}"
 
@@ -279,7 +279,7 @@ make_release_markdown() {
       }
       [ "${year}" == "null" ] && year=
       [ "${year}" ] || {
-        year=`cat "${OUT}/${releaseid}/${releaseid}.json" | jq -r '.year'`
+        year=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.year'`
       }
       echo "year: ${year}" >> "${markdown}"
 
@@ -308,7 +308,7 @@ make_release_markdown() {
       echo "## Album Data" >> "${markdown}"
       echo "" >> "${markdown}"
 
-      uri=`cat "${OUT}/${releaseid}/${releaseid}.json" | jq -r '.uri'`
+      uri=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.uri'`
       echo "[Discogs URL](${uri})" >> "${markdown}"
       echo "" >> "${markdown}"
 
@@ -326,10 +326,10 @@ make_release_markdown() {
       echo "- Notes: ${notes}" >> "${markdown}"
       echo "" >> "${markdown}"
 
-      [ -s "${OUT}/${releaseid}/${releaseid}_tracks.json" ] || {
-        cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      [ -s "${RELOUT}/${releaseid}/${releaseid}_tracks.json" ] || {
+        cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
           jq -r '.tracklist[]? | "\(.position)%\(.title)%\(.duration)"' > \
-          "${OUT}/${releaseid}/${releaseid}_tracks.json"
+          "${RELOUT}/${releaseid}/${releaseid}_tracks.json"
       }
 
       # Create track list for this album
@@ -337,7 +337,7 @@ make_release_markdown() {
       echo "" >> /tmp/__insert__
       echo "| **Position** | **Title** | **Duration** |" >> /tmp/__insert__
       echo "|--------------|-----------|--------------|" >> /tmp/__insert__
-      cat "${OUT}/${releaseid}/${releaseid}_tracks.json" | while read track
+      cat "${RELOUT}/${releaseid}/${releaseid}_tracks.json" | while read track
       do
         [ "${track}" ] || continue
         position=`echo "${track}" | awk -F '%' ' { print $1 } '`
@@ -350,18 +350,18 @@ make_release_markdown() {
       cp /tmp/foo$$ ${markdown}
       rm -f /tmp/foo$$ /tmp/__insert__ 
 
-      [ -s "${OUT}/${releaseid}/${releaseid}_extra.json" ] || {
-        cat "${OUT}/${releaseid}/${releaseid}.json" | \
+      [ -s "${RELOUT}/${releaseid}/${releaseid}_extra.json" ] || {
+        cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
           jq -r '.extraartists[]? | "\(.name)%\(.role)"' > \
-          "${OUT}/${releaseid}/${releaseid}_extra.json"
+          "${RELOUT}/${releaseid}/${releaseid}_extra.json"
       }
-      [ -s "${OUT}/${releaseid}/${releaseid}_extra.json" ] && {
+      [ -s "${RELOUT}/${releaseid}/${releaseid}_extra.json" ] && {
         # Insert artist roles list for this album
         echo "## Artist Roles" > /tmp/__insert__
         echo "" >> /tmp/__insert__
         echo "| **Name** | **Role** |" >> /tmp/__insert__
         echo "|----------|----------|" >> /tmp/__insert__
-        cat "${OUT}/${releaseid}/${releaseid}_extra.json" | while read artistrole
+        cat "${RELOUT}/${releaseid}/${releaseid}_extra.json" | while read artistrole
         do
           [ "${artistrole}" ] || continue
           name=`echo "${artistrole}" | awk -F '%' ' { print $1 } '`
@@ -392,6 +392,7 @@ make_release_markdown() {
 [ -d json/releases_import/masters ] || mkdir json/releases_import/masters
 
 HERE=`pwd`
+RELOUT="${HERE}/json"
 OUT="${HERE}/json/releases_import"
 
 # Find albums in the Discogs database

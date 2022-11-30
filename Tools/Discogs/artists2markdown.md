@@ -32,7 +32,7 @@ DISCOGS_TOKEN=
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc
 
 usage() {
-  printf "\nUsage: artists2markdown [-F] [-N] [-R] [-U] [-u username] [-t token] [-h]"
+  printf "\nUsage: artists2markdown [-F] [-N] [-R] [-U] [-u username] [-t token] [-v vault] [-h]"
   printf "\nWhere:"
   printf "\n\t-F indicates force overwrite of previously generated files."
   printf "\n\t-N indicates do not use a Discogs API token."
@@ -40,6 +40,8 @@ usage() {
   printf "\n\t-U indicates run an update, only newly added Discogs artists will be processed."
   printf "\n\t-u 'username' specifies your Discogs username."
   printf "\n\t-t 'token' specifies your Discogs API token."
+  printf "\n\t-v 'vault' specifies the vault location for generated markdown."
+  printf "\n\t\nDefault: capitalized Discogs username"
   printf "\n\t-h displays this usage message and exits.\n"
   printf "\nA Discogs username is required."
   printf "\nA Discogs username and token can be added to ~/.config/mpprc as the variables"
@@ -59,8 +61,9 @@ overwrite=
 remove=
 update=
 usetoken=1
+VAULT=
 # Command line arguments override config file settings
-while getopts "FNRUu:t:h" flag; do
+while getopts "FNRUu:t:v:h" flag; do
     case $flag in
         F)
             overwrite=1
@@ -80,6 +83,9 @@ while getopts "FNRUu:t:h" flag; do
         t)
             DISCOGS_TOKEN="$OPTARG"
             ;;
+        v)
+            VAULT="$OPTARG"
+            ;;
         h)
             usage
             ;;
@@ -97,7 +103,7 @@ shift $(( OPTIND - 1 ))
   exit 1
 }
 
-VAULT="${DISCOGS_USER^}"
+[ "${VAULT}" ] || VAULT="${DISCOGS_USER^}"
 HERE=`pwd`
 PARENT=`dirname "${HERE}"`
 GRANDP=`dirname "${PARENT}"`
@@ -141,7 +147,7 @@ echo "Please be patient. A large Discogs collection may take a while."
   mkartists=1
   echo "# Discogs Artists" > ${OUT}
   echo "" >> ${OUT}
-  echo "## List of Discogs Artists in Vault" >> ${OUT}
+  echo "## List of Discogs Artists in ${VAULT}" >> ${OUT}
   echo "" >> ${OUT}
   echo "| **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** |" >> ${OUT}
   echo "|--|--|--|--|--|" >> ${OUT}
