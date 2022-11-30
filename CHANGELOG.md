@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.0.2 Release 1
+
+* Add support for generation of markdown from a local library using Discogs API
+* Additional fixes for mixing Discogs user collection and local music library
+* Add artist profile creation for music library markdown generated using Discogs API
+* Support for multiple local libraries (and multiple Discogs user collections)
+
 ## Version 1.0.1 Release 3
 
 * Add Quickstart section to README and Release Notes
