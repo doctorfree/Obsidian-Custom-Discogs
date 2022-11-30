@@ -87,14 +87,14 @@ GROUP BY "**" + artist + "**"
 
 ## See also
 
-- [Dataview: Index](Dataviews/__USERNAME___Dataviews.md)
-- [Dataview: Discogs_Albums](Dataviews/__USERNAME___Discogs_Albums.md)
-- [Dataview: Discogs_Albums_1977](Dataviews/__USERNAME___Discogs_Albums_1977.md)
-- [Dataview: Discogs_Albums_70s](Dataviews/__USERNAME___Discogs_Albums_70s.md)
-- [Dataview: Discogs_Art_Rock](Dataviews/__USERNAME___Discogs_Art_Rock.md)
-- [Dataview: Discogs_Progressive](Dataviews/__USERNAME___Discogs_Progressive.md)
-- [Dataview: Discogs_Reissue](Dataviews/__USERNAME___Discogs_Reissue.md)
-- [Index of the Discogs Vault](__USERNAME___Discogs_Index.md)
+- [Dataview: __USERNSTR__ Index](Dataviews/__USERNAME___Dataviews.md)
+- [Dataview: __USERNSTR__ Albums](Dataviews/__USERNAME___Albums.md)
+- [Dataview: __USERNSTR__ Albums 1977](Dataviews/__USERNAME___Albums_1977.md)
+- [Dataview: __USERNSTR__ Albums 70s](Dataviews/__USERNAME___Albums_70s.md)
+- [Dataview: __USERNSTR__ Art Rock](Dataviews/__USERNAME___Art_Rock.md)
+- [Dataview: __USERNSTR__ Progressive](Dataviews/__USERNAME___Progressive.md)
+- [Dataview: __USERNSTR__ Reissue](Dataviews/__USERNAME___Reissue.md)
+- [Index of the __USERNSTR__ Vault](__USERNAME___Index.md)
 - [README](README.md)
 - [Process](Process.md)
 

@@ -17,29 +17,37 @@ VAULT=`dirname "${PARENT}"`
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
 usage() {
-  printf "\nUsage: mkdiscogs [-a] [-A] [-T] [-U] [-f] [-t token] [-u user] [-h]"
+  printf "\nUsage: mkdiscogs [-a] [-A] [-T] [-U] [-d] [-f] [-m] [-t token] [-u user] [-v vault] [-h]"
   printf "\nWhere:"
+  printf "\n\t-a indicates run albums2markdown and artists2markdown"
   printf "\n\t-A indicates sort by Artist"
   printf "\n\t-T indicates sort by Title (default)"
   printf "\n\t-U indicates perform an update of the Discogs collection"
+  printf "\n\t-d indicates generate dataviews from templates"
   printf "\n\t-f indicates overwrite any pre-existing username index markdown"
+  printf "\n\t-m indicates generate markdown table rather than list"
   printf "\n\t-t 'token' specifies the Discogs API token"
   printf "\n\t\t(token='none' indicates no token should be used)"
   printf "\n\t-u 'user' specifies the Discogs username"
+  printf "\n\t-v 'vault' specifies the folder name for generated artist/album markdown"
   printf "\n\t-h displays this usage message and exits\n\n"
   exit 1
 }
 
 all=
+mkdv=
 mktable=
 overwrite=
 sortorder="title"
 updateopt=
+vault=
+vaultopt=
 
-while getopts "aATUft:u:h" flag; do
+while getopts "aATUdfmt:u:v:h" flag; do
     case $flag in
         a)
             all=1
+            mkdv=1
             ;;
         A)
             sortorder="artist"
@@ -50,14 +58,24 @@ while getopts "aATUft:u:h" flag; do
         U)
             updateopt="-U"
             ;;
+        d)
+            mkdv=1
+            ;;
         f)
             overwrite=1
+            ;;
+        m)
+            mktable=1
             ;;
         t)
             DISCOGS_TOKEN="${OPTARG}"
             ;;
         u)
             DISCOGS_USER="${OPTARG}"
+            ;;
+        v)
+            vault="${OPTARG}"
+            vaultopt="-v ${vault}"
             ;;
         h)
             usage
@@ -73,7 +91,14 @@ shift $(( OPTIND - 1 ))
   exit 1
 }
 
-DUSER="${DISCOGS_USER^}"
+DUSERCAP="${DISCOGS_USER^}"
+if [ "${vault}" ]
+then
+  DUSER="${vault}"
+else
+  DUSER="${DUSERCAP}"
+fi
+DUSERSTR=`echo "${DUSER}" | sed -e "s/_/ /g"`
 TOP="${VAULT}/${DUSER}"
 
 tokenopt="-N"
@@ -82,15 +107,26 @@ tokenopt="-N"
 }
 
 [ "${all}" ] && {
-  [ -x ./albums2markdown ] && ./albums2markdown ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
-  [ -x ./artists2markdown ] && ./artists2markdown ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
-  [ -x ./get-discogs-profile ] && ./get-discogs-profile ${tokenopt} -u ${DISCOGS_USER}
+  [ -x ./albums2markdown ] && {
+    ./albums2markdown ${updateopt} ${vaultopt} ${tokenopt} -u ${DISCOGS_USER}
+  }
+  [ -x ./artists2markdown ] && {
+      ./artists2markdown ${updateopt} ${vaultopt} ${tokenopt} -u ${DISCOGS_USER}
+  }
   if [ "${sortorder}" == "title" ]
   then
-    [ -x ./mkdiscogs ] && ./mkdiscogs -A ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
+    [ -x ./mkdiscogs ] && {
+        ./mkdiscogs -A ${updateopt} ${vaultopt} ${tokenopt} -u ${DISCOGS_USER}
+    }
   else
-    [ -x ./mkdiscogs ] && ./mkdiscogs -T ${updateopt} ${tokenopt} -u ${DISCOGS_USER}
+    [ -x ./mkdiscogs ] && {
+        ./mkdiscogs -T ${updateopt} ${vaultopt} ${tokenopt} -u ${DISCOGS_USER}
+    }
   fi
+}
+
+[ "${mkdv}" ] && {
+  [ -x ./get-discogs-profile ] && ./get-discogs-profile ${tokenopt} -u ${DISCOGS_USER}
   for mdown in "${VAULT}"/assets/templates/Dataviews/*.md \
                "${VAULT}"/assets/templates/*.md
   do
@@ -100,7 +136,9 @@ tokenopt="-N"
     path=`dirname "${mdown}"`
     opath=`echo "${path}" | sed -e "s%/assets/templates%%"`
     [ -d "${opath}" ] || mkdir -p "${opath}"
-    cat "${mdown}" | sed -e "s/__USERNAME__/${DUSER}/g" > /tmp/md$$
+    cat "${mdown}" | sed -e "s/__USERNAME__/${DUSER}/g" \
+                         -e "s/__USERNSTR__/${DUSERSTR}/g" \
+                         -e "s/__DISCOGSUSER__/${DUSERCAP}/g" > /tmp/md$$
     cp /tmp/md$$ "${opath}/${DUSER}_${base}"
     rm -f /tmp/md$$
   done
@@ -115,16 +153,16 @@ if [ "${mktable}" ]
 then
   if [ "${sortorder}" == "title" ]
   then
-    discogs_index="Table_of_Discogs_${DUSER}_by_Title"
+    discogs_index="Table_of_${DUSER}_by_Title"
   else
-    discogs_index="Table_of_Discogs_${DUSER}_by_Artist"
+    discogs_index="Table_of_${DUSER}_by_Artist"
   fi
 else
   if [ "${sortorder}" == "title" ]
   then
-    discogs_index="Discogs_${DUSER}_by_Title"
+    discogs_index="${DUSER}_by_Title"
   else
-    discogs_index="Discogs_${DUSER}_by_Artist"
+    discogs_index="${DUSER}_by_Artist"
   fi
 fi
 
@@ -138,22 +176,22 @@ then
   echo "Exiting without changes."
   exit 1
 else
-  echo "# Discogs ${DUSER}" > ${VAULT}/${discogs_index}.md
+  echo "# ${DUSERSTR}" > ${VAULT}/${discogs_index}.md
   echo "" >> ${VAULT}/${discogs_index}.md
   if [ "${mktable}" ]
   then
     if [ "${sortorder}" == "title" ]
     then
-      echo "## Table of Discogs ${DUSER} by Title" >> ${VAULT}/${discogs_index}.md
+      echo "## Table of ${DUSERSTR} by Title" >> ${VAULT}/${discogs_index}.md
     else
-      echo "## Table of Discogs ${DUSER} by Artist" >> ${VAULT}/${discogs_index}.md
+      echo "## Table of ${DUSERSTR} by Artist" >> ${VAULT}/${discogs_index}.md
     fi
   else
     if [ "${sortorder}" == "title" ]
     then
-      echo "## Index of Discogs ${DUSER} by Title" >> ${VAULT}/${discogs_index}.md
+      echo "## Index of ${DUSERSTR} by Title" >> ${VAULT}/${discogs_index}.md
     else
-      echo "## Index of Discogs ${DUSER} by Artist" >> ${VAULT}/${discogs_index}.md
+      echo "## Index of ${DUSERSTR} by Artist" >> ${VAULT}/${discogs_index}.md
     fi
     echo "" >> ${VAULT}/${discogs_index}.md
     echo "| **[A](#a)** | **[B](#b)** | **[C](#c)** | **[D](#d)** | **[E](#e)** | **[F](#f)** | **[G](#g)** | **[H](#h)** | **[I](#i)** | **[J](#j)** | **[K](#k)** | **[L](#l)** | **[M](#m)** | **[N](#n)** | **[O](#o)** | **[P](#p)** | **[Q](#q)** | **[R](#r)** | **[S](#s)** | **[T](#t)** | **[U](#u)** | **[V](#v)** | **[W](#w)** | **[X](#x)** | **[Y](#y)** | **[Z](#z)** |" >> ${VAULT}/${discogs_index}.md

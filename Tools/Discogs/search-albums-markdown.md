@@ -99,8 +99,9 @@ TOP="../../${vault}"
   usage
 }
 
-echo "Generating markdown for all albums in a previous Discogs search"
+echo "Generating markdown for all artists/albums/tracks in ${artists_dir}"
 echo "Please be patient. A large music library may take a while."
+echo ""
 
 [ -d "${TOP}" ] || mkdir -p "${TOP}"
 [ -d "${coverfolder}" ] || {
@@ -297,7 +298,7 @@ make_release_markdown() {
       echo "# ${title}" >> "${markdown}"
       echo "" >> "${markdown}"
 
-      echo "By ${artist}" >> "${markdown}"
+      echo "By [${artist}](${artist}_Artist.md)" >> "${markdown}"
       echo "" >> "${markdown}"
 
       [ -f "${coverfolder}/${filename}.png" ] && {

@@ -107,7 +107,7 @@ Obsidian is required for some features but is not necessary to view the Obsidian
 
 ### Dataview Queries
 
-The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](https://github.com/doctorfree/Obsidian-Custom-Discogs/Dataview_Queries.md) document.
+The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](https://github.com/doctorfree/Obsidian-Custom-Discogs/Dataview_Queries.md) document and the generated Dataview markdown in the `Dataviews` folder of an initialized vault.
 
 ## Customization
 

@@ -1,6 +1,6 @@
 # Obsidian Discogs Vault
 
-This repository is organized as an Obsidian vault designed to add media descriptions from a Discogs collection in markdown format. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
+This repository is organized as an Obsidian vault designed to generate artist/album descriptions from a Discogs collection or local music library. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
 
 The `Obsidian-Custom-Discogs` repository is a stripped down version of the `Obsidian-Discogs-Vault` repository, omitting the pre-generated markdown from my personal Discogs collection while retaining the structure and scripts used to generate a Discogs collection vault. See the [description of Process](Process.md) for an overview of the process and tools employed in the use of this repository.
 
@@ -37,7 +37,7 @@ Other Obsidian vaults I have curated and made public include:
 
 ## Setup
 
-The Discogs API requires a Discogs username and, optionally, a Discogs API token. These can be found in your Discogs account and placed in the file `$HOME/.config/mpprc` as follows:
+The Discogs API requires a Discogs username and Discogs API token. These can be found in your Discogs account and placed in the file `$HOME/.config/mpprc` as follows:
 
 ```shell
 # The Discogs username can be found by visiting discogs.com. Login, use the
@@ -50,19 +50,29 @@ DISCOGS_USER="your_discogs_username"
 DISCOGS_TOKEN="your_discogs_api_token"
 ```
 
-After configuring your Discogs username and API token, generate markdown for your Discogs collection by running the `Setup` script:
+After configuring your Discogs username and API token, generate markdown for your Discogs collection or from a local music library by running the `Setup` script.
+
+To generate artist, album, and track markdown from your Discogs user collection:
 
 ```console
 ./Setup
 ```
 
+To generate artist, album, and track markdown from a local music library:
+
+```console
+./Setup -L /path/to/library
+```
+
 Alternately, the Discogs username and API token can be specified on the command line:
 
 ```console
-./Setup -u username -t token
+./Setup -u username -t token [ -L /path/to/library ]
 ```
 
-The resulting markdown and cover art can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username. Multiple Discogs collections from different Discogs users can be converted to markdown in the vault by running the `Setup` script multiple times with different `-u username` arguments.
+**[Note:]** To generate markdown from a local music library, the library must be organized by artist subfolders containing album folders. For example, the tracks from the album "Imagine" by John Lennon would be in the folder `/path/to/library/John Lennon/Imagine/`. If you prefer pathnames without spaces, use an underscore in place of spaces and the markdown generation scripts will perform the appropriate transformation when searching Discogs (e.g. `/path/to/library/John_Lennon/Imagine/` would work).
+
+The resulting markdown and cover art from a Discogs user collection can be found in the `Username` and `assets` folders where `Username` is your capitalized Discogs username. Multiple Discogs collections from different Discogs users can be converted to markdown in the vault by running the `Setup` script multiple times with different `-u username` arguments.
 
 For example, to generate markdown for the items and artists in Discogs user Dr_Robert's collection, run the following:
 
@@ -70,9 +80,17 @@ For example, to generate markdown for the items and artists in Discogs user Dr_R
 ./Setup -u Dr_Robert
 ```
 
-The resulting markdown and cover art can be found in the `Dr_Robert` and `assets` folders.
+The markdown and cover art can be found in the `Dr_Robert` and `assets` folders.
 
-**[Note:]** For large Discogs collections this process can take a while. Discogs throttles API requests to prevent denial of service attacks. I have tried to minimize API requests where possible but if you see any way to further optimize please [open an issue](https://github.com/doctorfree/Obsidian-Custom-Discogs/issues).
+The markdown and cover art generated from a local music library can be found in the `Music_Library` and `assets` folders. Multiple local libraries from different folder paths can be converted to markdown in the vault by running the `Setup` script multiple times with different `-L /path/to/library` arguments and by providing different vault names for each library with the `-v vault` command line option.
+
+For example, to generate markdown for the albums and artists in `/u/audio/jazz` and name the markdown output folder `Jazz`, run the following:
+
+```console
+./Setup -L /u/audio/jazz -v Jazz
+```
+
+**[Note:]** For large Discogs collections or local music libraries this process can take a while. Discogs throttles API requests to prevent denial of service attacks. I have tried to minimize API requests where possible but if you see any way to further optimize please [open an issue](https://github.com/doctorfree/Obsidian-Custom-Discogs/issues).
 
 ## Usage
 
@@ -82,11 +100,11 @@ The resulting markdown and cover art can be found in the `Dr_Robert` and `assets
 3. Open the vault in Obsidian via "Open another vault -> Open folder as vault"
 4. Trust us. :) 
 5. When Obsidian opens the settings, verify the "Dataview" plugin is enabled
-6. Done! The Obsidian Custom Discogs vault is now available to you in its purest and most useful form!
+6. Done! The Obsidian Custom Discogs vault is now available to you in its purest and most useful form.
 
 ## Dataview
 
-The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](Dataview_Queries.md) document.
+The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](Dataview_Queries.md) document and the generated Dataview markdown in the `Dataviews` folder.
 
 Additional visual representations of the Custom Discogs Vault, also based upon Dataview queries, are provided by the [Excalibrain](https://github.com/zsviczian/excalibrain) Obsidian plugin.
 

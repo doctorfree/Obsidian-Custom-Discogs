@@ -4,7 +4,7 @@ banner_x: 1.0
 banner_y: 1.0
 ---
 
-# All Discogs Albums
+# All Albums
 
 This code displays all albums from the __USERNAME__ folder sorted by artist.
 

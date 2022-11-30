@@ -10,14 +10,14 @@ The Obsidian Custom Discogs vault markdown contains metadata with tags allowing 
 
 ## Example Dataview Queries
 
-- [Discogs_Albums](__USERNAME___Discogs_Albums.md)
-- [Discogs_Albums_1977](__USERNAME___Discogs_Albums_1977.md)
-- [Discogs_Albums_70s](__USERNAME___Discogs_Albums_70s.md)
-- [Discogs_Art_Rock](__USERNAME___Discogs_Art_Rock.md)
-- [Discogs_Progressive](__USERNAME___Discogs_Progressive.md)
-- [Discogs_Reissue](__USERNAME___Discogs_Reissue.md)
+- [__USERNSTR__ Albums](__USERNAME___Albums.md)
+- [__USERNSTR__ Albums 1977](__USERNAME___Albums_1977.md)
+- [__USERNSTR__ Albums 70s](__USERNAME___Albums_70s.md)
+- [__USERNSTR__ Art Rock](__USERNAME___Art_Rock.md)
+- [__USERNSTR__ Progressive](__USERNAME___Progressive.md)
+- [__USERNSTR__ Reissue](__USERNAME___Reissue.md)
 
-## Example Dataview Discogs Query
+## Example Dataview Query
 
 The markdown for "Fragile" by Yes has the following YAML prelude:
 
@@ -40,7 +40,7 @@ notes:
 ---
 ```
 
-### Dataview Discogs query
+### Dataview query
 
 The above album metadata can be used to perform Dataview queries to search, filter, and retrieve albums as if they are in a database. For example, to produce a table of all albums in this vault by Yes released prior to 1980 add the following to a markdown file in the vault:
 
@@ -90,8 +90,8 @@ WHERE (artist = "Yes" OR artist = "XTC") AND
 GROUP BY "**" + artist + "**"
 ```
 
-- [Index of the Discogs Vault](../__USERNAME___Discogs_Index.md)
+- [Index of the __USERNSTR__ Vault](../__USERNAME___Index.md)
 - [Dataview Queries](../__USERNAME___Dataview_Queries.md)
-- [Discogs User Profile](../__USERNAME___Discogs_User_Profile.md)
+- [__DISCOGSUSER__ Discogs User Profile](../__DISCOGSUSER___Discogs_User_Profile.md)
 - [README](../README.md)
 - [Process](../Process.md)

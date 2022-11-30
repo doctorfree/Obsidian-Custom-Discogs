@@ -38,13 +38,14 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc
 
 usage() {
-  printf "\nUsage: discogs2markdown [-F] [-N] [-U] [-u username] [-t token] [-h]"
+  printf "\nUsage: albums2markdown [-F] [-N] [-U] [-u username] [-t token] [-v vault] [-h]"
   printf "\nWhere:"
   printf "\n\t-F indicates force overwrite of previously generated files."
   printf "\n\t-N indicates do not use a Discogs API token."
   printf "\n\t-U indicates run an update, only newly added Discogs items will be processed."
   printf "\n\t-u 'username' specifies your Discogs username."
   printf "\n\t-t 'token' specifies your Discogs API token."
+  printf "\n\t-v 'vault' specifies folder name for generated album markdown."
   printf "\n\t-h displays this usage message and exits.\n"
   printf "\nA Discogs username is required."
   printf "\nA Discogs username and token can be added to ~/.config/mpprc as the variables"
@@ -61,8 +62,9 @@ usage() {
 overwrite=
 update=
 usetoken=1
+vault=
 # Command line arguments override config file settings
-while getopts "FNUu:t:h" flag; do
+while getopts "FNUu:t:v:h" flag; do
     case $flag in
         F)
             overwrite=1
@@ -78,6 +80,9 @@ while getopts "FNUu:t:h" flag; do
             ;;
         t)
             DISCOGS_TOKEN="$OPTARG"
+            ;;
+        v)
+            vault="$OPTARG"
             ;;
         h)
             usage
@@ -97,7 +102,7 @@ shift $(( OPTIND - 1 ))
 }
 
 coverfolder="../../assets/albumcovers"
-vault="${DISCOGS_USER^}"
+[ "${vault}" ] || vault="${DISCOGS_USER^}"
 TOP="../../${vault}"
 FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
 
@@ -345,7 +350,7 @@ make_release_markdown() {
         echo "# ${title}" >> "${markdown}"
         echo "" >> "${markdown}"
 
-        echo "By ${artist}" >> "${markdown}"
+        echo "By [${artist}](${artist}_Artist.md)" >> "${markdown}"
         echo "" >> "${markdown}"
 
         [ -f "${coverfolder}/${filename}.png" ] && {

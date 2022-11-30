@@ -4,7 +4,7 @@ banner_x: 0.5
 banner_y: 0.5
 ---
 
-# Discogs Art Rock Albums
+# Art Rock Albums
 
 This code displays art rock albums in the __USERNAME__ folder sorted by artist. The dataview query look like the following:
 

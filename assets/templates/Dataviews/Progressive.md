@@ -4,7 +4,7 @@ banner_x: 1.0
 banner_y: 1.0
 ---
 
-# Discogs Progressive Albums
+# Progressive Albums
 
 This code displays all albums in a progressive genre from the __USERNAME__ folder with a release year sorted by year.
 

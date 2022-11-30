@@ -4,7 +4,7 @@ banner_x: 0.5
 banner_y: 0.5
 ---
 
-# Reissue Discogs Albums
+# Reissue Albums
 
 This code displays reissued albums from the __USERNAME__ folder sorted by artist. The dataview queries look like the following:
 
@@ -19,7 +19,7 @@ GROUP BY "**" + artist + "**"
 ```
 ````
 
-## Reissue Discogs Albums
+## Reissue Albums
 
 ```dataview
 LIST link(rows.file.link, rows.title)

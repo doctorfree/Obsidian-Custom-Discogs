@@ -111,7 +111,7 @@ TOP="${GRANDP}/${VAULT}"
 TOOLS="${GRANDP}/Tools/Discogs"
 ASSETS="${GRANDP}/assets"
 ARTISTS="${ASSETS}/artists"
-OUT="${GRANDP}/Discogs_${VAULT}_Artists.md"
+OUT="${GRANDP}/${VAULT}_Artists.md"
 
 URL="https://api.discogs.com"
 ART="${URL}/artists"
@@ -130,9 +130,9 @@ cd "${TOP}"
 
 if [ "${update}" ]
 then
-  echo "Generating markdown for newly added artists in Discogs user ${DISCOGS_USER} collection"
+  echo "Generating markdown for newly added artists"
 else
-  echo "Generating markdown for all artists in Discogs user ${DISCOGS_USER} collection"
+  echo "Generating markdown for all artists"
 fi
 if [ "${DISCOGS_TOKEN}" ]
 then
@@ -141,13 +141,13 @@ else
   echo "No API token in use, requests will be slower and no images downloaded"
   echo "Set an API token in ~/.config/mpprc with DISCOGS_TOKEN=token"
 fi
-echo "Please be patient. A large Discogs collection may take a while."
+echo "Please be patient. A large Discogs collection or library may take a while."
 
 [ -f ${OUT} ] || {
   mkartists=1
-  echo "# Discogs Artists" > ${OUT}
+  echo "# Artists" > ${OUT}
   echo "" >> ${OUT}
-  echo "## List of Discogs Artists in ${VAULT}" >> ${OUT}
+  echo "## Artists in ${VAULT}" >> ${OUT}
   echo "" >> ${OUT}
   echo "| **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** |" >> ${OUT}
   echo "|--|--|--|--|--|" >> ${OUT}
@@ -216,13 +216,13 @@ do
           -H "Accept: application/vnd.discogs.v2.plaintext+json" \
           -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
           jq -r '.')
-        sleep 1
+        sleep 1.1
       else
         artist_profile=$(curl --stderr /dev/null \
           -A "${AGE}" "${ART}/${artist_id}" \
           -H "Accept: application/vnd.discogs.v2.plaintext+json" \
           jq -r '.')
-        sleep 2.4
+        sleep 2.5
       fi
       echo "${artist_profile}" > "${TOOLS}/json/artists/${artist_id}.json"
       [ -f "${ARTISTS}/${artist}.png" ] || {
