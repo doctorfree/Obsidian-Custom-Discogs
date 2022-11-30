@@ -1,8 +1,12 @@
 # Obsidian Discogs Vault
 
-**Automate the generation of a collection of markdown format files with detailed descriptions of Discogs user collections and local music libraries.**
+The Obsidian Custom Discogs repository provides an automated workflow to generate markdown format files from [Discogs](https://discogs.com) user collections and local music libraries using the Discogs API.
 
-This repository is organized as an Obsidian vault designed to generate artist/album/track descriptions from a Discogs collection or a local music library. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
+Discogs (short for discographies) is a database of information about audio recordings, including commercial releases, promotional releases, and bootleg or off-label releases.  As of 19 November 2022, Discogs contains over 15.7 million releases, by over 8.3 million artists, across over 1.9 million labels, contributed from over 644,000 contributor user accounts - with these figures constantly growing as users continually add previously unlisted releases to the site over time.
+
+The automated workflow provided in this repository utilizes the Discogs API to access this rich source of data on music releases and artists, retrieve it, and transform it into a format suitable for human consumption and display.
+
+The repository is organized as an Obsidian vault designed to generate artist/album/track descriptions from a Discogs collection or a local music library. It can be viewed using any markdown viewer (e.g. almost any browser) but if Obsidian is used then many additional features will be available including queries using the [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) plugin for [Obsidian](https://obsidian.md/).
 
 See the [description of Process](Process.md) for an overview of the process and tools employed in the use of this repository.
 
@@ -143,14 +147,12 @@ Obsidian community plugins we have found useful and can recommend include the fo
 
 - [Dataview Queries](Dataview_Queries.md)
 - [Process](Process.md)
-
-Other Obsidian vaults I have curated and made public include:
-
-- [Obsidian Beets Vault](https://github.com/doctorfree/Obsidian-Beets-Vault)
-- [Obsidian Books Vault](https://github.com/doctorfree/Obsidian-Books-Vault)
-- [Obsidian CD Vault](https://github.com/doctorfree/Obsidian-CD-Vault)
-- [Obsidian Discogs Vault](https://github.com/doctorfree/Obsidian-Discogs-Vault)
-- [Obsidian Roon Vault](https://github.com/doctorfree/Obsidian-Roon-Vault)
-- [Obsidian Vinyl Vault](https://github.com/doctorfree/Obsidian-Vinyl-Vault)
-- [Obsidian Media Vault](https://github.com/doctorfree/Obsidian-Media-Vault)
-- [Pokemon Markdown Vault](https://github.com/doctorfree/Pokedex-Markdown)
+- Additional Obsidian vaults I have curated and made public include:
+    - [Obsidian Beets Vault](https://github.com/doctorfree/Obsidian-Beets-Vault)
+    - [Obsidian Books Vault](https://github.com/doctorfree/Obsidian-Books-Vault)
+    - [Obsidian CD Vault](https://github.com/doctorfree/Obsidian-CD-Vault)
+    - [Obsidian Discogs Vault](https://github.com/doctorfree/Obsidian-Discogs-Vault)
+    - [Obsidian Roon Vault](https://github.com/doctorfree/Obsidian-Roon-Vault)
+    - [Obsidian Vinyl Vault](https://github.com/doctorfree/Obsidian-Vinyl-Vault)
+    - [Obsidian Media Vault](https://github.com/doctorfree/Obsidian-Media-Vault)
+    - [Pokemon Markdown Vault](https://github.com/doctorfree/Pokedex-Markdown)
