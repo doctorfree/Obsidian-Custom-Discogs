@@ -99,6 +99,36 @@ For example, to generate markdown for the albums and artists in `/u/audio/jazz` 
 5. When Obsidian opens the settings, verify the "Dataview" plugin is enabled
 6. Done! The Obsidian Custom Discogs vault is now available to you in its purest and most useful form.
 
+### Setup usage
+
+The `Setup` command has the following output from `Setup -h`:
+
+```console
+Usage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]
+Where:
+	-L 'path' indicates use a local music library rather than Discogs collection
+	-R indicates remove intermediate JSON created during previous run
+	-U indicates perform an update of the Discogs collection
+	-t 'token' specifies the Discogs API token
+	-u 'user' specifies the Discogs username
+	-v 'vault' specifies the folder name for generated artist/album markdown
+	-h displays this usage message and exits
+Example invocations:
+	# Retrieve Discogs collection
+	# Generated markdown in capitalized Discogs username folder
+	./Setup
+	# Generated markdown in 'Discogs' folder
+	./Setup -v Discogs
+	# Retrieve Discogs user 'foobar' collection
+	./Setup -u foobar
+	# Retrieve Discogs data for local music library in /u/audio
+	./Setup -L /u/audio -v Audio
+	# Provide Discogs username and API token on command line
+	./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek
+	# Retrieve Discogs data for genre local music library in /u/jazz
+	./Setup -L /u/jazz -v Jazz
+```
+
 ## Dataview
 
 The Obsidian Custom Discogs vault has been curated with metadata allowing queries to be performed using the Obsidian Dataview plugin. Sample queries along with the code used to perform them can be viewed in the [Dataview Queries](Dataview_Queries.md) document and the generated Dataview markdown in the `Dataviews` folder.

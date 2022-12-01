@@ -5,6 +5,7 @@ cd ..
 for artist in */*
 do
   [ "${artist}" == "*/*" ] && continue
+  [ "${artist}" == "assets/templates" ] && continue
   [ -d "${artist}" ] || continue
   cd "${artist}"
   for album in *.md

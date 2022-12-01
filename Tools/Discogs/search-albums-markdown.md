@@ -62,7 +62,7 @@ vault="Music_Library"
 # Command line arguments override config file settings
 while getopts "v:fru:t:h" flag; do
     case $flag in
-        d)
+        v)
             vault="$OPTARG"
             ;;
         f)
@@ -298,7 +298,7 @@ make_release_markdown() {
       echo "# ${title}" >> "${markdown}"
       echo "" >> "${markdown}"
 
-      echo "By [${artist}](${artist}_Artist.md)" >> "${markdown}"
+      echo "By [${artist}](${artistname}_Artist.md)" >> "${markdown}"
       echo "" >> "${markdown}"
 
       [ -f "${coverfolder}/${filename}.png" ] && {

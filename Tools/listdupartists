@@ -9,6 +9,7 @@ declare -a artists=()
 for artist in */*
 do
   [ "${artist}" == "*/*" ] && continue
+  [ "${artist}" == "assets/templates" ] && continue
   [ -d "${artist}" ] || continue
   lowerartist=`echo "${artist}" | tr '[:upper:]' '[:lower:]'`
   artists+=("${lowerartist}")

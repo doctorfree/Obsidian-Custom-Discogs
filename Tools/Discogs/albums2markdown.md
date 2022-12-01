@@ -350,7 +350,7 @@ make_release_markdown() {
         echo "# ${title}" >> "${markdown}"
         echo "" >> "${markdown}"
 
-        echo "By [${artist}](${artist}_Artist.md)" >> "${markdown}"
+        echo "By [${artist}](${artistname}_Artist.md)" >> "${markdown}"
         echo "" >> "${markdown}"
 
         [ -f "${coverfolder}/${filename}.png" ] && {

@@ -7,6 +7,7 @@ REMOVE=
 for artist in */*
 do
   [ "${artist}" == "*/*" ] && continue
+  [ "${artist}" == "assets/templates" ] && continue
   [ -d "${artist}" ] || continue
   cd "${artist}"
   removedir=

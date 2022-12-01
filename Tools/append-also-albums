@@ -18,6 +18,7 @@ LIST=
 for artistdir in */*
 do
   [ "${artistdir}" == "*/*" ] && continue
+  [ "${artistdir}" == "assets/templates" ] && continue
   [ -d "${artistdir}" ] || continue
   artist=`basename "${artistdir}"`
   folder=`dirname "${artistdir}"`

@@ -14,6 +14,7 @@ Several custom scripts and utilities were used to automate the generation of mar
 - [Requirements](#requirements)
 - [Discogs Collection](#discogs_collection)
 - [Local Music Library](#local_music_library)
+- [Usage](#usage)
 - [Updates](#updates)
 - [See also](#see_also)
 
@@ -86,6 +87,36 @@ For example, to generate markdown for the albums and artists in `/u/audio/jazz` 
 
 ```console
 ./Setup -L /u/audio/jazz -v Jazz
+```
+
+## Usage
+
+The `Setup` command has the following output from `./Setup -h`:
+
+```console
+Usage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]
+Where:
+	-L 'path' indicates use a local music library rather than Discogs collection
+	-R indicates remove intermediate JSON created during previous run
+	-U indicates perform an update of the Discogs collection
+	-t 'token' specifies the Discogs API token
+	-u 'user' specifies the Discogs username
+	-v 'vault' specifies the folder name for generated artist/album markdown
+	-h displays this usage message and exits
+Example invocations:
+	# Retrieve Discogs collection
+	# Generated markdown in capitalized Discogs username folder
+	./Setup
+	# Generated markdown in 'Discogs' folder
+	./Setup -v Discogs
+	# Retrieve Discogs user 'foobar' collection
+	./Setup -u foobar
+	# Retrieve Discogs data for local music library in /u/audio
+	./Setup -L /u/audio -v Audio
+	# Provide Discogs username and API token on command line
+	./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek
+	# Retrieve Discogs data for genre local music library in /u/jazz
+	./Setup -L /u/jazz -v Jazz
 ```
 
 ## Updates

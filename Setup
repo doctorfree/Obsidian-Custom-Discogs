@@ -22,7 +22,7 @@ VAULT=
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
 usage() {
-  printf "\nUsage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]"
+  printf "Usage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]"
   printf "\nWhere:"
   printf "\n\t-L 'path' indicates use a local music library rather than Discogs collection"
   printf "\n\t-R indicates remove intermediate JSON created during previous run"
@@ -30,7 +30,21 @@ usage() {
   printf "\n\t-t 'token' specifies the Discogs API token"
   printf "\n\t-u 'user' specifies the Discogs username"
   printf "\n\t-v 'vault' specifies the folder name for generated artist/album markdown"
-  printf "\n\t-h displays this usage message and exits\n\n"
+  printf "\n\t-h displays this usage message and exits"
+  printf "\nExample invocations:"
+  printf "\n\t# Retrieve Discogs collection"
+  printf "\n\t# Generated markdown in capitalized Discogs username folder"
+  printf "\n\t./Setup"
+  printf "\n\t# Generated markdown in 'Discogs' folder"
+  printf "\n\t./Setup -v Discogs"
+  printf "\n\t# Retrieve Discogs user 'foobar' collection"
+  printf "\n\t./Setup -u foobar"
+  printf "\n\t# Retrieve Discogs data for local music library in /u/audio"
+  printf "\n\t./Setup -L /u/audio -v Audio"
+  printf "\n\t# Provide Discogs username and API token on command line"
+  printf "\n\t./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek"
+  printf "\n\t# Retrieve Discogs data for genre local music library in /u/jazz"
+  printf "\n\t./Setup -L /u/jazz -v Jazz\n"
   exit 1
 }
 
