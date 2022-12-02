@@ -24,9 +24,11 @@ If your media library is cataloged in the online service [Discogs](https://disco
 
 ## Requirements
 
-Most of the download, conversion, creation, and curation process was performed on Linux using the standard utilities included with every Linux distribution. It is probably also possible to use these same tools on Mac OS as its underlying operating system and utilities are BSD. I doubt this will work on Windows but maybe with WSL. Use Linux.
+In order to use the download, conversion, creation, and curation process utilized by the Obsidian Custom Discogs project a [Discogs](https://discogs.com) account and Discogs API token are required. Account creation can be performed at https://discogs.com by providing a username, password, and email address. After verifying new account creation via email, obtain an API token by logging in to your Discogs account and clicking `Settings -> Developers`. Click the `Generate new token` button and copy the generated token.
 
-In addition to the standard Linux utilities, the download and conversion tools require `curl` and `jq`.
+Your Discogs username and API token are required to perform some of the API requests sent during the automated vault creation process. See the following section for details on how to configure your system with these credentials.
+
+In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl` and `jq`. On most Linux systems these are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl` and `sudo apt install jq` or `sudo dnf install jq`.
 
 ## Discogs_Collection
 
@@ -89,6 +91,21 @@ For example, to generate markdown for the albums and artists in `/u/audio/jazz` 
 ./Setup -L /u/audio/jazz -v Jazz
 ```
 
+### Add a local music library to a Discogs user collection
+
+**[NEW FEATURE]** Obsidian Custom Discogs now supports adding vault items to a Discogs user collection. After generating an Obsidian Custom Discogs vault from a local music library, the resulting markdown can be used to add those albums and artists to your Discogs collection.
+
+To add albums and artists to a Discogs user collection, cd into the `Tools/Discogs` folder and run the `albums2discogs` command. For example, if `Setup -L /path/to/library` were previously run and the vault folder `Music_Library` created with generated markdown for the artists, albums, and tracks in `/path/to/library` then those artists and albums can be added to a Discogs user collection folder with:
+
+```shell
+cd Tools/Discogs
+./albums2discogs -h  # Display the help message
+./albums2discogs -n -v Music_Library -f "Music Library"  # Perform a dry-run
+./albums2discogs -q -v Music_Library -f "Music Library"
+```
+
+You can examine the source code for the [albums2discogs command](Tools/Discogs/albums2discogs.md).
+
 ## Usage
 
 The `Setup` command has the following output from `./Setup -h`:
@@ -117,6 +134,29 @@ Example invocations:
 	./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek
 	# Retrieve Discogs data for genre local music library in /u/jazz
 	./Setup -L /u/jazz -v Jazz
+```
+
+The `albums2discogs` command has the following output from `./albums2discogs -h`:
+
+```console
+Usage: albums2discogs [-f foldername] [-u username] [-t token] [-v vault] [-hnq]
+Where:
+	-f 'foldername' specifies the Discogs collection folder name to use.
+		If no folder by this name exists, one will be created.
+		Default: Uncategorized
+	-u 'username' specifies your Discogs username.
+	-t 'token' specifies your Discogs API token.
+	-v 'vault' specifies vault folder name for input markdown.
+		The albums in this vault folder will be added to the Discogs collection.
+		If no vault folder is given then all vault folders will be added.
+	-n indicates perform a dry run, tell me what you would do but do nothing
+	-q indicates quiet mode, so not display each album added
+	-h displays this usage message and exits.
+
+A Discogs username is required.
+A Discogs username and token can be added to ~/.config/mpprc as the variables
+	DISCOGS_USER and DISCOGS_TOKEN
+or specified on the command line with '-u username' and '-t token'
 ```
 
 ## Updates

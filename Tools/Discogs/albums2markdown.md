@@ -3,7 +3,7 @@
 ```shell
 #!/bin/bash
 #
-# discogs2markdown - written by Ronald Joe Record <ronaldrecord@gmail.com>
+# albums2markdown - written by Ronald Joe Record <ronaldrecord@gmail.com>
 #
 # Generate markdown for every item in your Discogs collection
 #
@@ -52,7 +52,7 @@ usage() {
   printf "\n\tDISCOGS_USER and DISCOGS_TOKEN"
   printf "\nor specified on the command line with '-u username' and '-t token'\n"
   printf "\nUpdates can be accomplished either with the '-U' option or '-F' option."
-  printf "\nAn update scenario is when 'discogs2markdown' has previously been run"
+  printf "\nAn update scenario is when 'albums2markdown' has previously been run"
   printf "\nbut new items have been added to the Discogs collection since then."
   printf "\nUpdating with '-U' is faster as it does not generate markdown for existing items."
   printf "\nIf both '-F' and '-U' are provided, only '-F' is used.\n\n"

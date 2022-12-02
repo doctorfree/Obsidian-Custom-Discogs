@@ -13,6 +13,7 @@ See the [description of Process](Process.md) for an overview of the process and 
 ## Table of Contents
 
 - [Quickstart](#quickstart)
+- [Requirements](#requirements)
 - [Setup](#setup)
 - [Usage](#usage)
 - [Dataview](#dataview)
@@ -31,6 +32,14 @@ See the [description of Process](Process.md) for an overview of the process and 
     - `./Setup` for a Discogs user collection
     - `./Setup -L /path/to/library` for a local music library
 - Open the vault in Obsidian via "Open another vault -> Open folder as vault"
+
+## Requirements
+
+In order to use the download, conversion, creation, and curation process utilized by the Obsidian Custom Discogs project a [Discogs](https://discogs.com) account and Discogs API token are required. Account creation can be performed at https://discogs.com by providing a username, password, and email address. After verifying new account creation via email, obtain an API token by logging in to your Discogs account and clicking `Settings -> Developers`. Click the `Generate new token` button and copy the generated token.
+
+Your Discogs username and API token are required to perform some of the API requests sent during the automated vault creation process. See the following section for details on how to configure your system with these credentials.
+
+In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl` and `jq`. On most Linux systems these are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl` and `sudo apt install jq` or `sudo dnf install jq`.
 
 ## Setup
 
@@ -140,6 +149,19 @@ The Obsidian Custom Discogs vault markdown contains metadata with tags allowing 
 ## Discogs
 
 [Discogs](https://www.discogs.com) users with curated Discogs collections can generate markdown format files for all items and artists in their Discogs collection using the Discogs API. See [Process.md](Process.md) for details on how to automate this process.
+
+**[NEW FEATURE]** Obsidian Custom Discogs now supports adding vault items to a Discogs user collection. After generating an Obsidian Custom Discogs vault from a local music library, the resulting markdown can be used to add those albums and artists to your Discogs collection.
+
+To add albums and artists to a Discogs user collection, cd into the `Tools/Discogs` folder and run the `albums2discogs` command. For example, if `Setup -L /path/to/library` were previously run and the vault folder `Music_Library` created with generated markdown for the artists, albums, and tracks in `/path/to/library` then those artists and albums can be added to a Discogs user collection folder with:
+
+```shell
+cd Tools/Discogs
+./albums2discogs -h  # Display the help message
+./albums2discogs -n -v Music_Library -f "Music Library"  # Perform a dry-run
+./albums2discogs -q -v Music_Library -f "Music Library"
+```
+
+You can examine the source code for the [albums2discogs command](Tools/Discogs/albums2discogs.md).
 
 ## Process
 

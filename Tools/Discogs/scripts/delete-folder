@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# Create a new Discogs collection folder
+#
+# replace "headers['Content-Type'] = 'application/x-www-form-urlencoded'"
+# with    "headers['Content-Type'] = 'application/json'"
+# pass dict as json.dumps({'name': 'new folder'})
+
+# Get to the Discogs username and a Discogs API token
+[ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
+
+[ "${DISCOGS_USER}" ] && [ "${DISCOGS_TOKEN}" ] || {
+  echo "Discogs username and API token are required"
+  echo "Set DISCOGS_USER and DISCOGS_TOKEN in ${HOME}/.config/mpprc"
+  echo "Exiting."
+  exit 1
+}
+
+URL="https://api.discogs.com"
+FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
+AGE="github.com/doctorfree/MusicPlayerPlus"
+folderid="5191225"
+
+[ -d json ] || mkdir json
+
+# Delete collection folder
+folder=$(curl -X DELETE --stderr /dev/null \
+  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
+  -A "${AGE}" "${FDR}/${folderid}" | \
+  jq -r '.')
+
+echo "${folder}" > "json/${DISCOGS_USER}_del_folder.json"

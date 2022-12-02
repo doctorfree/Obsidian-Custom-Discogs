@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# get-discogs-release
+#
+#release_id=272144
+release_id=3663971
+
+# Get a Discogs API token
+[ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
+
+[ "${DISCOGS_TOKEN}" ] || {
+  echo "Discogs API token required"
+  echo "Set DISCOGS_USER and DISCOGS_TOKEN in ${HOME}/.config/mpprc"
+  echo "Exiting."
+  exit 1
+}
+
+URL="https://api.discogs.com"
+REL="${URL}/users/${DISCOGS_USER}/collection/releases/${release_id}"
+AGE="github.com/doctorfree/MusicPlayerPlus"
+
+[ -d json ] || mkdir json
+
+release=$(curl --stderr /dev/null \
+  -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
+  -A "${AGE}" "${REL}" | \
+  jq -r '.')
+
+echo "${release}" > "json/release_${release_id}.json"

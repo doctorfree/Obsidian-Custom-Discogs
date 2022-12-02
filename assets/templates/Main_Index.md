@@ -1,17 +1,3 @@
----
-banner: "assets/banners/Bird-Banner.gif"
-banner_x: 0.5
-banner_y: 0.35
----
-
-# __USERNSTR__ Vault Index
-
-## Info
-
-- [README](README.md)
-- [Process](Process.md)
-- [Release Notes](Release_Notes.md)
-- [__DISCOGSUSTR__ Discogs User Profile](__DISCOGSUSER___Discogs_User_Profile.md)
 
 ## __USERNSTR__
 

@@ -92,6 +92,7 @@ shift $(( OPTIND - 1 ))
 }
 
 DUSERCAP="${DISCOGS_USER^}"
+DUCAPSTR=`echo "${DUSERCAP}" | sed -e "s/_/ /g"`
 if [ "${vault}" ]
 then
   DUSER="${vault}"
@@ -127,19 +128,51 @@ tokenopt="-N"
 
 [ "${mkdv}" ] && {
   [ -x ./get-discogs-profile ] && ./get-discogs-profile ${tokenopt} -u ${DISCOGS_USER}
+  append=
+  numindex=`/bin/ls -1 "${VAULT}"/*_Index.md 2> /dev/null | wc -l`
+  [ ${numindex} -gt 0 ] && append=1
   for mdown in "${VAULT}"/assets/templates/Dataviews/*.md \
                "${VAULT}"/assets/templates/*.md
   do
     [ "${mdown}" == "${VAULT}/assets/templates/Dataviews/*.md" ] && continue
     [ "${mdown}" == "${VAULT}/assets/templates/*.md" ] && continue
+    [ "${mdown}" == "${VAULT}/assets/templates/Main_Index.md" ] && continue
     base=`basename "${mdown}"`
     path=`dirname "${mdown}"`
     opath=`echo "${path}" | sed -e "s%/assets/templates%%"`
     [ -d "${opath}" ] || mkdir -p "${opath}"
     cat "${mdown}" | sed -e "s/__USERNAME__/${DUSER}/g" \
                          -e "s/__USERNSTR__/${DUSERSTR}/g" \
+                         -e "s/__DISCOGSUSTR__/${DUCAPSTR}/g" \
                          -e "s/__DISCOGSUSER__/${DUSERCAP}/g" > /tmp/md$$
     cp /tmp/md$$ "${opath}/${DUSER}_${base}"
+    [ "${base}" == "Index.md" ] && {
+      if [ "${append}" ]
+      then
+        [ -f "${opath}/Main_${base}" ] && {
+          [ -f "${path}/Main_${base}" ] && {
+            cat "${path}/Main_${base}" | \
+              sed -e "s/__USERNAME__/${DUSER}/g" \
+                  -e "s/__USERNSTR__/${DUSERSTR}/g" \
+                  -e "s/__DISCOGSUSTR__/${DUCAPSTR}/g" \
+                  -e "s/__DISCOGSUSER__/${DUSERCAP}/g" > /tmp/index$$
+            grep "${DUCAPSTR} Discogs User Profile" \
+                 "${opath}/Main_${base}" > /dev/null || {
+              # Append new Discogs user profile after existing one
+              sed -i "/Discogs User Profile.*/a - \[${DUCAPSTR} Discogs User Profile\](${DUSERCAP}_Discogs_User_Profile.md)" "${opath}/Main_${base}"
+            }
+            cat /tmp/index$$ >> "${opath}/Main_${base}"
+          }
+        }
+      else
+        [ -f "${opath}/Main_${base}" ] || {
+          cat /tmp/md$$ | \
+            sed -e "s/${DUSERSTR} Vault Index/Vault Index/" > /tmp/index$$
+          cp /tmp/index$$ "${opath}/Main_${base}"
+        }
+      fi
+      rm -f /tmp/index$$
+    }
     rm -f /tmp/md$$
   done
 }
