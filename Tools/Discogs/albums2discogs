@@ -186,6 +186,16 @@ fi
 echo "Adding albums to Discogs user \"${DISCOGS_USER}\" collection folder \"${foldername}\""
 echo "Please be patient. A large number of albums may take a while."
 
+HERE=`pwd`
+[ "${dryrun}" ] || {
+  # Create JSON return output folder
+  [ -d "${HERE}/json" ] || mkdir -p "${HERE}/json"
+  [ -d "${HERE}/json/Discogs" ] || mkdir -p "${HERE}/json/Discogs"
+  [ -d "${HERE}/json/Discogs/${foldername}" ] || {
+    mkdir -p "${HERE}/json/Discogs/${foldername}"
+  }
+}
+
 add_releases() {
   for album in */*.md
   do
@@ -222,10 +232,13 @@ add_releases() {
       printf "\n\tto Discogs collection folder ${foldername}"
     }
     [ "${dryrun}" ] || {
-      curl -X POST --stderr /dev/null \
+      newalbum=$(curl -X POST --stderr /dev/null \
         -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
-        -A "${AGE}" "${FDR}/${folderid}/releases/${release_id}"
+        -A "${AGE}" "${FDR}/${folderid}/releases/${release_id}" | \
+        jq -r '.')
       sleep 1
+      albumid=`echo "${newalbum}" | jq -r '.id'`
+      echo "${newalbum}" > "${HERE}/json/Discogs/${foldername}/${albumid}.json"
     }
   done
 }
