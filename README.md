@@ -25,8 +25,8 @@ See the [description of Process](Process.md) for an overview of the process and 
 
 ## Quickstart
 
-- [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.2r1.tar.gz)
-- Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.2r1.tar.gz`
+- [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.2r2.tar.gz)
+- Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.2r2.tar.gz`
 - Set the Discogs username (`DISCOGS_USER`) and API token (`DISCOGS_TOKEN`) in `$HOME/.config/mpprc`
 - Customize the vault by running `./Setup` in the vault folder:
     - `./Setup` for a Discogs user collection
