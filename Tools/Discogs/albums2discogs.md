@@ -14,6 +14,9 @@
 # Create a new collection folder:
 # POST /users/{username}/collection/folders?name={foldername}
 #
+# Delete a release from a collection folder
+# DELETE /users/{username}/collection/folders/{folder_id}/releases/{release_id}/instances/{instance_id}
+#
 # Set your Discogs username and API token in ~/.config/mpprc as:
 # DISCOGS_USER and DISCOGS_TOKEN
 # Alternately, they can be provided on the command line or set here.
@@ -42,7 +45,7 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc
 
 usage() {
-  printf "\nUsage: albums2discogs [-f foldername] [-u username] [-t token] [-v vault] [-hnqy]"
+  printf "\nUsage: albums2discogs [-f foldername] [-u username] [-t token] [-v vault] [-hnqry]"
   printf "\nWhere:"
   printf "\n\t-f 'foldername' specifies the Discogs collection folder name to use."
   printf "\n\t\tIf no folder by this name exists, one will be created."
@@ -54,6 +57,8 @@ usage() {
   printf "\n\t\tIf no vault folder is given then all vault folders will be added."
   printf "\n\t-n indicates perform a dry run, tell me what you would do but do nothing"
   printf "\n\t-q indicates quiet mode, so not display each album added"
+  printf "\n\t-r indicates remove mode, remove rather than add releases from a collection"
+  printf "\n\t\t-r must be accompanied by '-f foldername'"
   printf "\n\t-y indicates proceed, do not prompt for confirmation to continue"
   printf "\n\t-h displays this usage message and exits.\n"
   printf "\nA Discogs username is required."
@@ -69,8 +74,9 @@ foldername=
 dryrun=
 quiet=
 proceed=
+remove=
 # Command line arguments override config file settings
-while getopts "f:u:t:v:hnqy" flag; do
+while getopts "f:u:t:v:hnqry" flag; do
     case $flag in
         f)
             foldername="$OPTARG"
@@ -90,6 +96,9 @@ while getopts "f:u:t:v:hnqy" flag; do
         q)
             quiet=1
             ;;
+        r)
+            remove=1
+            ;;
         y)
             proceed=1
             ;;
@@ -99,6 +108,14 @@ while getopts "f:u:t:v:hnqy" flag; do
     esac
 done
 shift $(( OPTIND - 1 ))
+
+[ "${remove}" ] && {
+  [ "${foldername}" ] || {
+    echo "The '-r' (remove) option requires a foldername with '-f foldername'"
+    echo "Exiting."
+    usage
+  }
+}
 
 [ "${DISCOGS_USER}" ] || {
   echo "Discogs username required."
@@ -125,8 +142,13 @@ REL="${URL}/users/${DISCOGS_USER}/collection/releases"
     else
       fname="Uncategorized"
     fi
-    printf "\nAdding releases to Discogs user \"${DISCOGS_USER}\" collection folder \"${fname}\"."
-    printf "\nThis procedure will modify your Discogs account.\n"
+    if [ "${remove}" ]
+    then
+      printf "\nDeleting releases in Discogs user \"${DISCOGS_USER}\" collection folder \"${fname}\"."
+    else
+      printf "\nAdding releases to Discogs user \"${DISCOGS_USER}\" collection folder \"${fname}\"."
+    fi
+    printf "\nThis procedure will modify your Discogs account.\n\n"
     while true
     do
       read -p "Do you wish to proceed with the Discogs collection folder update ? (y/n) " yn
@@ -149,54 +171,74 @@ REL="${URL}/users/${DISCOGS_USER}/collection/releases"
 # Check if collection folder exists and if not, create it
 if [ "${foldername}" ]
 then
-  folders=$(curl --stderr /dev/null \
-    -A "${AGE}" "${FDR}" \
-    -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
-    jq -r '.')
-  sleep 1
+  [ "${remove}" ] || {
+    folders=$(curl --stderr /dev/null \
+      -A "${AGE}" "${FDR}" \
+      -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+      jq -r '.')
+    sleep 1
 
-  folderexists=
-  echo "${folders}" | jq -r '.folders[] | (.id|tostring) + ":" + .name' | \
-    while IFS=":" read -r id name
-    do
-      [ "${name}" == "${foldername}" ] && {
-        folderexists=1
-        folderid="${id}"
-        break
-      }
-    done
+    folderexists=
+    echo "${folders}" | jq -r '.folders[] | (.id|tostring) + ":" + .name' | \
+      while IFS=":" read -r id name
+      do
+        [ "${name}" == "${foldername}" ] && {
+          folderexists=1
+          folderid="${id}"
+          break
+        }
+      done
   
-  [ "${folderexists}" ] || {
-    # Create new collection folder
-    if [ "${dryrun}" ]
-    then
-      echo "Would create new collection folder: ${foldername}"
-    else
-      newfolder=$(curl -X POST --stderr /dev/null \
-        -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
-        -H "Content-Type: application/json" \
-        -d "{\"name\":\"${foldername}\"}" \
-        -A "${AGE}" "${FDR}"  | \
-        jq -r '.')
-      sleep 1
-      folderid=`echo "${newfolder}" | jq -r '.id'`
-    fi
+    [ "${folderexists}" ] || {
+      # Create new collection folder
+      if [ "${dryrun}" ]
+      then
+        echo "Would create new collection folder: ${foldername}"
+      else
+        newfolder=$(curl -X POST --stderr /dev/null \
+          -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
+          -H "Content-Type: application/json" \
+          -d "{\"name\":\"${foldername}\"}" \
+          -A "${AGE}" "${FDR}"  | \
+          jq -r '.')
+        sleep 1
+        folderid=`echo "${newfolder}" | jq -r '.id'`
+      fi
+    }
   }
 else
   foldername="Uncategorized"
 fi
 
-echo "Adding albums to Discogs user \"${DISCOGS_USER}\" collection folder \"${foldername}\""
+if [ "${remove}" ]
+then
+  echo "Deleting albums in Discogs user \"${DISCOGS_USER}\" collection folder \"${foldername}\""
+else
+  echo "Adding albums to Discogs user \"${DISCOGS_USER}\" collection folder \"${foldername}\""
+fi
 echo "Please be patient. A large number of albums may take a while."
 
 HERE=`pwd`
 [ "${dryrun}" ] || {
-  # Create JSON return output folder
-  [ -d "${HERE}/json" ] || mkdir -p "${HERE}/json"
-  [ -d "${HERE}/json/Discogs" ] || mkdir -p "${HERE}/json/Discogs"
-  [ -d "${HERE}/json/Discogs/${foldername}" ] || {
-    mkdir -p "${HERE}/json/Discogs/${foldername}"
-  }
+  if [ "${remove}" ]
+  then
+    # Check for JSON return output folder
+    [ -d "${HERE}/json/Discogs/${foldername}" ] || {
+      printf "\nCollection folder not found."
+      printf "\nRequired collection output folder:"
+      printf "\n\t${HERE}/json/Discogs/${foldername}"
+      printf "\nRemoval only supported for previously generated collection folders."
+      printf "\nExiting.\n"
+      exit 1
+    }
+  else
+    # Create JSON return output folder
+    [ -d "${HERE}/json" ] || mkdir -p "${HERE}/json"
+    [ -d "${HERE}/json/Discogs" ] || mkdir -p "${HERE}/json/Discogs"
+    [ -d "${HERE}/json/Discogs/${foldername}" ] || {
+      mkdir -p "${HERE}/json/Discogs/${foldername}"
+    }
+  fi
 }
 
 add_releases() {
@@ -246,29 +288,61 @@ add_releases() {
   done
 }
 
-cd ../..
-
-if [ "${vault}" ]
+if [ "${remove}" ]
 then
-  [ -d "${vault}" ] || {
-    echo "Cannot locate vault folder ${vault}"
-    echo "Exiting without adding any releases to the Discogs collection."
-    usage
-  }
-  cd "${vault}"
-  add_releases
-  cd ..
-else
-  for vault in *
+  for jsonrel in "${HERE}/json/Discogs/${foldername}"/*.json
   do
-    [ "${vault}" == "assets" ] && continue
-    [ "${vault}" == "Dataviews" ] && continue
-    [ "${vault}" == "Tools" ] && continue
-    [ -d "${vault}" ] && {
-      cd "${vault}"
-      add_releases
-      cd ..
+    [ "${jsonrel}" == "${HERE}/json/Discogs/${foldername}/*.json" ] && continue
+    release_id=$(cat "${jsonrel}" | jq -r '.id')
+    folder_id=$(cat "${jsonrel}" | jq -r '.folder_id')
+    instance_id=$(cat "${jsonrel}" | jq -r '.instance_id')
+    [ "${release_id}" ] && [ "${folder_id}" ] && [ "${instance_id}" ] && {
+      [ "${quiet}" ] || {
+        title=$(cat "${jsonrel}" | jq -r '.basic_information.title')
+        if [ "${dryrun}" ]
+        then
+          printf "\nWould delete album \"${title}\""
+        else
+          printf "\nDeleting album \"${title}\""
+        fi
+        printf "\n\tin Discogs collection folder ${foldername}"
+      }
+      [ "${dryrun}" ] || {
+        delalbum=$(curl -X DELETE --stderr /dev/null \
+          -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
+          -A "${AGE}" \
+          "${FDR}/${folder_id}/releases/${release_id}/instances/${instance_id}" | \
+          jq -r '.')
+        sleep 1
+        rm -f "${jsonrel}"
+      }
     }
   done
+else
+  cd ../..
+
+  if [ "${vault}" ]
+  then
+    [ -d "${vault}" ] || {
+      echo "Cannot locate vault folder ${vault}"
+      echo "Exiting without adding any releases to the Discogs collection."
+      usage
+    }
+    cd "${vault}"
+    add_releases
+    cd ..
+  else
+    for vault in *
+    do
+      [ "${vault}" == "assets" ] && continue
+      [ "${vault}" == "Dataviews" ] && continue
+      [ "${vault}" == "Tools" ] && continue
+      [ -d "${vault}" ] && {
+        cd "${vault}"
+        add_releases
+        cd ..
+      }
+    done
+  fi
 fi
 ```

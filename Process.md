@@ -105,19 +105,29 @@ To add albums and artists to a Discogs user collection, run the `./Setup -A ...`
 ./Setup -A -v "Vinyl Rips" -f "Vinyl"
 ```
 
-The `./Setup -A ...` command runs the `Tools/Discogs/albums2discogs` command. You can examine the source code for the [albums2discogs command](Tools/Discogs/albums2discogs.md).
+To remove items previously added to a Discogs user collection folder provide the collection folder name along with the `-R` switch to `Setup`:
+
+```shell
+# Perform a dry-run
+./Setup -R -n -f "Vinyl"
+# Remove previously added releases from the "Vinyl" Discogs collection folder
+./Setup -R -f "Vinyl"
+```
+
+The `./Setup -A ...` and `./Setup -R ...` commands run the `Tools/Discogs/albums2discogs` command. You can examine the source code for the [albums2discogs command](Tools/Discogs/albums2discogs.md).
 
 ## Usage
 
 The `Setup` command has the following output from `./Setup -h`:
 
 ```console
-Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnq]
+Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnqr]
 Where:
-	-L 'path' indicates use a local music library rather than Discogs collection
-	-R indicates remove intermediate JSON created during previous run
-	-U indicates perform an update of the Discogs collection
 	-A indicates add existing vault folder releases to a Discogs collection
+	-R indicates remove items from specified Discogs collection folder
+		Must be accompanied by '-f foldername'
+	-L 'path' indicates use a local music library rather than Discogs collection
+	-U indicates perform an update of the Discogs collection
 		Vault folder is specified with '-v vault'
 		Vault folder previously created with './Setup -L /path/to/library'
 		Can be used with '-f foldername' to specify collection folder
@@ -128,6 +138,7 @@ Where:
 	-e displays example usage and exits
 	-n indicates perform a dry run (only used in conjunction with '-A')
 	-q indicates quiet mode (only used in conjunction with '-A')
+	-r indicates remove intermediate JSON created during previous run
 	-t 'token' specifies the Discogs API token
 	-u 'user' specifies the Discogs username
 	-v 'vault' specifies the folder name for generated artist/album markdown
@@ -157,6 +168,8 @@ Example invocations:
 	./Setup -n -A -f MyMusic -v Music_Library
 	# Add releases from Music_Library folder to Discogs collection MyMusic:
 	./Setup -A -f MyMusic -v Music_Library
+	# Delete releases in MyMusic Discogs collection folder:
+	./Setup -R -f MyMusic
 ```
 
 ## Updates

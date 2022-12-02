@@ -25,12 +25,13 @@ VAULT=
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
 usage() {
-  printf "Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnq]"
+  printf "Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnqr]"
   printf "\nWhere:"
-  printf "\n\t-L 'path' indicates use a local music library rather than Discogs collection"
-  printf "\n\t-R indicates remove intermediate JSON created during previous run"
-  printf "\n\t-U indicates perform an update of the Discogs collection"
   printf "\n\t-A indicates add existing vault folder releases to a Discogs collection"
+  printf "\n\t-R indicates remove items from specified Discogs collection folder"
+  printf "\n\t\tMust be accompanied by '-f foldername'"
+  printf "\n\t-L 'path' indicates use a local music library rather than Discogs collection"
+  printf "\n\t-U indicates perform an update of the Discogs collection"
   printf "\n\t\tVault folder is specified with '-v vault'"
   printf "\n\t\tVault folder previously created with './Setup -L /path/to/library'"
   printf "\n\t\tCan be used with '-f foldername' to specify collection folder"
@@ -41,6 +42,7 @@ usage() {
   printf "\n\t-e displays example usage and exits"
   printf "\n\t-n indicates perform a dry run (only used in conjunction with '-A')"
   printf "\n\t-q indicates quiet mode (only used in conjunction with '-A')"
+  printf "\n\t-r indicates remove intermediate JSON created during previous run"
   printf "\n\t-t 'token' specifies the Discogs API token"
   printf "\n\t-u 'user' specifies the Discogs username"
   printf "\n\t-v 'vault' specifies the folder name for generated artist/album markdown"
@@ -68,7 +70,9 @@ examples() {
   printf "\n\t# Perform a dry run:"
   printf "\n\t./Setup -n -A -f MyMusic -v Music_Library"
   printf "\n\t# Add releases from Music_Library folder to Discogs collection MyMusic:"
-  printf "\n\t./Setup -A -f MyMusic -v Music_Library\n"
+  printf "\n\t./Setup -A -f MyMusic -v Music_Library"
+  printf "\n\t# Delete releases in MyMusic Discogs collection folder:"
+  printf "\n\t./Setup -R -f MyMusic\n"
   exit 1
 }
 
@@ -149,7 +153,8 @@ cleanup=
 dryrun=
 foldername=
 quiet=
-while getopts "AL:RUf:t:u:v:ehnq" flag; do
+remove=
+while getopts "AL:RUf:t:u:v:ehnqr" flag; do
     case $flag in
         A)
             add2discogs=1
@@ -172,8 +177,11 @@ while getopts "AL:RUf:t:u:v:ehnq" flag; do
               usage
             }
             ;;
-        R)
+        r)
             cleanup=1
+            ;;
+        R)
+            remove=1
             ;;
         U)
             UPD="-U"
@@ -202,6 +210,21 @@ shift $(( OPTIND - 1 ))
   echo "-A (add to Discogs collection) is only supported after a previous run with -L"
   echo "First perform \"./Setup -L ${LOCAL}\""
   echo "After that succeeds then perform './Setup -A ...'"
+  echo "Exiting"
+  exit 1
+}
+[ "${add2discogs}" ] && [ "${remove}" ] && {
+  echo "-A and -R cannot be used together."
+  echo "-A indicates \"add to Discogs collection\", -R indicates remove from collection"
+  echo "Exiting"
+  exit 1
+}
+[ "${remove}" ] && [ "${LOCAL}" ] && {
+  echo "-R and -L cannot be used together."
+  echo "-R (remove from Discogs collection) is only supported after a previous run with -A"
+  echo "First perform \"./Setup -L ${LOCAL}\""
+  echo "After that succeeds then perform './Setup -A ...'"
+  echo "After that succeeds then perform './Setup -R ...' to remove items added with -A"
   echo "Exiting"
   exit 1
 }
@@ -303,7 +326,13 @@ else
     ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
                      -v "${VAULT}" -f "${foldername}" ${dryrun} ${quiet}
   else
-    ./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD} -v "${VAULT}"
+    if [ "${remove}" ]
+    then
+      ./albums2discogs -r -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
+                       -f "${foldername}" ${dryrun} ${quiet}
+    else
+      ./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD} -v "${VAULT}"
+    fi
   fi
 fi
 ```
