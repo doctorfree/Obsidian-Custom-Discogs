@@ -25,15 +25,30 @@ VAULT=
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"
 
 usage() {
-  printf "Usage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]"
+  printf "Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnq]"
   printf "\nWhere:"
   printf "\n\t-L 'path' indicates use a local music library rather than Discogs collection"
   printf "\n\t-R indicates remove intermediate JSON created during previous run"
   printf "\n\t-U indicates perform an update of the Discogs collection"
+  printf "\n\t-A indicates add existing vault folder releases to a Discogs collection"
+  printf "\n\t\tVault folder is specified with '-v vault'"
+  printf "\n\t\tVault folder previously created with './Setup -L /path/to/library'"
+  printf "\n\t\tCan be used with '-f foldername' to specify collection folder"
+  printf "\n\t-f 'foldername' specifies the Discogs collection folder name to use."
+  printf "\n\t\tOnly used in conjunction with '-A' (add releases to Discogs collection)."
+  printf "\n\t\tIf no folder by this name exists, one will be created."
+  printf "\n\t\tDefault: Uncategorized"
+  printf "\n\t-e displays example usage and exits"
+  printf "\n\t-n indicates perform a dry run (only used in conjunction with '-A')"
+  printf "\n\t-q indicates quiet mode (only used in conjunction with '-A')"
   printf "\n\t-t 'token' specifies the Discogs API token"
   printf "\n\t-u 'user' specifies the Discogs username"
   printf "\n\t-v 'vault' specifies the folder name for generated artist/album markdown"
-  printf "\n\t-h displays this usage message and exits"
+  printf "\n\t-h displays this usage message and exits\n"
+  exit 1
+}
+
+examples() {
   printf "\nExample invocations:"
   printf "\n\t# Retrieve Discogs collection"
   printf "\n\t# Generated markdown in capitalized Discogs username folder"
@@ -47,7 +62,13 @@ usage() {
   printf "\n\t# Provide Discogs username and API token on command line"
   printf "\n\t./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek"
   printf "\n\t# Retrieve Discogs data for genre local music library in /u/jazz"
-  printf "\n\t./Setup -L /u/jazz -v Jazz\n"
+  printf "\n\t./Setup -L /u/jazz -v Jazz"
+  printf "\n\t# Add existing vault releases to Discogs collection folder"
+  printf "\n\t# From a previously generated run of './Setup -L /path/to/library'"
+  printf "\n\t# Perform a dry run:"
+  printf "\n\t./Setup -n -A -f MyMusic -v Music_Library"
+  printf "\n\t# Add releases from Music_Library folder to Discogs collection MyMusic:"
+  printf "\n\t./Setup -A -f MyMusic -v Music_Library\n"
   exit 1
 }
 
@@ -123,9 +144,25 @@ get_token() {
   done
 }
 
+add2discogs=
 cleanup=
-while getopts "L:RUt:u:v:h" flag; do
+dryrun=
+foldername=
+quiet=
+while getopts "AL:RUf:t:u:v:ehnq" flag; do
     case $flag in
+        A)
+            add2discogs=1
+            ;;
+        f)
+            foldername="$OPTARG"
+            ;;
+        n)
+            dryrun="-n"
+            ;;
+        q)
+            quiet="-q"
+            ;;
         L)
             LOCAL="${OPTARG}"
             [ -d "${OPTARG}" ] || {
@@ -148,7 +185,10 @@ while getopts "L:RUt:u:v:h" flag; do
             DISCOGS_USER="${OPTARG}"
             ;;
         v)
-            VAULT="-v ${OPTARG}"
+            VAULT="${OPTARG}"
+            ;;
+        e)
+            examples
             ;;
         h)
             usage
@@ -156,6 +196,15 @@ while getopts "L:RUt:u:v:h" flag; do
     esac
 done
 shift $(( OPTIND - 1 ))
+
+[ "${add2discogs}" ] && [ "${LOCAL}" ] && {
+  echo "-A and -L cannot be used together."
+  echo "-A (add to Discogs collection) is only supported after a previous run with -L"
+  echo "First perform \"./Setup -L ${LOCAL}\""
+  echo "After that succeeds then perform './Setup -A ...'"
+  echo "Exiting"
+  exit 1
+}
 
 [ "${cleanup}" ] && {
   echo "Cleaning up any previously created JSON used in generating markdown"
@@ -227,13 +276,13 @@ fi
 cd Tools/Discogs
 if [ "${LOCAL}" ]
 then
-  [ "${VAULT}" ] || VAULT="-v Music_Library"
+  [ "${VAULT}" ] || VAULT="Music_Library"
   if [ -x search-albums-markdown ]
   then
     ./search-albums-markdown \
         -t "${DISCOGS_TOKEN}" \
         -u "${DISCOGS_USER}" \
-        ${VAULT} ${LOCAL}
+        -v "${VAULT}" "${LOCAL}"
   else
     echo "Tools/Discogs/search-albums-markdown is not found or not executable."
     echo "Exiting without generating markdown."
@@ -241,14 +290,20 @@ then
   fi
   if [ -x artists2markdown ]
   then
-    ./artists2markdown -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${VAULT}
+    ./artists2markdown -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" -v "${VAULT}"
   else
     echo "Tools/Discogs/artists2markdown is not found or not executable."
     echo "No artist markdown generated for artists in ${LOCAL}."
   fi
-  ./mkdiscogs -A -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${VAULT}
-  ./mkdiscogs -d -T -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${VAULT}
+  ./mkdiscogs -A -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" -v "${VAULT}"
+  ./mkdiscogs -d -T -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" -v "${VAULT}"
 else
-  ./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD} ${VAULT}
+  if [ "${add2discogs}" ]
+  then
+    ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
+                     -v "${VAULT}" -f "${foldername}" ${dryrun} ${quiet}
+  else
+    ./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD} -v "${VAULT}"
+  fi
 fi
 ```

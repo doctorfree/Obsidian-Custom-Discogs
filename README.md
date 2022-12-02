@@ -113,15 +113,31 @@ For example, to generate markdown for the albums and artists in `/u/audio/jazz` 
 The `Setup` command has the following output from `Setup -h`:
 
 ```console
-Usage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]
+Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnq]
 Where:
 	-L 'path' indicates use a local music library rather than Discogs collection
 	-R indicates remove intermediate JSON created during previous run
 	-U indicates perform an update of the Discogs collection
+	-A indicates add existing vault folder releases to a Discogs collection
+		Vault folder is specified with '-v vault'
+		Vault folder previously created with './Setup -L /path/to/library'
+		Can be used with '-f foldername' to specify collection folder
+	-f 'foldername' specifies the Discogs collection folder name to use.
+		Only used in conjunction with '-A' (add releases to Discogs collection).
+		If no folder by this name exists, one will be created.
+		Default: Uncategorized
+	-e displays example usage and exits
+	-n indicates perform a dry run (only used in conjunction with '-A')
+	-q indicates quiet mode (only used in conjunction with '-A')
 	-t 'token' specifies the Discogs API token
 	-u 'user' specifies the Discogs username
 	-v 'vault' specifies the folder name for generated artist/album markdown
 	-h displays this usage message and exits
+```
+
+Example invocations of the `Setup` command can be displayed with `./Setup -e`:
+
+```console
 Example invocations:
 	# Retrieve Discogs collection
 	# Generated markdown in capitalized Discogs username folder
@@ -136,6 +152,12 @@ Example invocations:
 	./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek
 	# Retrieve Discogs data for genre local music library in /u/jazz
 	./Setup -L /u/jazz -v Jazz
+	# Add existing vault releases to Discogs collection folder
+	# From a previously generated run of './Setup -L /path/to/library'
+	# Perform a dry run:
+	./Setup -n -A -f MyMusic -v Music_Library
+	# Add releases from Music_Library folder to Discogs collection MyMusic:
+	./Setup -A -f MyMusic -v Music_Library
 ```
 
 ## Dataview

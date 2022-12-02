@@ -39,7 +39,7 @@ AGE="github.com/doctorfree/MusicPlayerPlus"
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc
 
 usage() {
-  printf "\nUsage: albums2discogs [-f foldername] [-u username] [-t token] [-v vault] [-hnq]"
+  printf "\nUsage: albums2discogs [-f foldername] [-u username] [-t token] [-v vault] [-hnqy]"
   printf "\nWhere:"
   printf "\n\t-f 'foldername' specifies the Discogs collection folder name to use."
   printf "\n\t\tIf no folder by this name exists, one will be created."
@@ -51,6 +51,7 @@ usage() {
   printf "\n\t\tIf no vault folder is given then all vault folders will be added."
   printf "\n\t-n indicates perform a dry run, tell me what you would do but do nothing"
   printf "\n\t-q indicates quiet mode, so not display each album added"
+  printf "\n\t-y indicates proceed, do not prompt for confirmation to continue"
   printf "\n\t-h displays this usage message and exits.\n"
   printf "\nA Discogs username is required."
   printf "\nA Discogs username and token can be added to ~/.config/mpprc as the variables"
@@ -64,8 +65,9 @@ folderid=1
 foldername=
 dryrun=
 quiet=
+proceed=
 # Command line arguments override config file settings
-while getopts "f:u:t:v:hnq" flag; do
+while getopts "f:u:t:v:hnqy" flag; do
     case $flag in
         f)
             foldername="$OPTARG"
@@ -84,6 +86,9 @@ while getopts "f:u:t:v:hnq" flag; do
             ;;
         q)
             quiet=1
+            ;;
+        y)
+            proceed=1
             ;;
         h)
             usage
@@ -108,8 +113,39 @@ shift $(( OPTIND - 1 ))
 FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
 REL="${URL}/users/${DISCOGS_USER}/collection/releases"
 
+# If not a dry run, prompt to confirm
+[ "${dryrun}" ] || {
+  [ "${proceed}" ] || {
+    if [ "${foldername}" ]
+    then
+      fname="${foldername}"
+    else
+      fname="Uncategorized"
+    fi
+    printf "\nAdding releases to Discogs user \"${DISCOGS_USER}\" collection folder \"${fname}\"."
+    printf "\nThis procedure will modify your Discogs account.\n"
+    while true
+    do
+      read -p "Do you wish to proceed with the Discogs collection folder update ? (y/n) " yn
+      case $yn in
+          [Yy]* )
+                break
+                ;;
+          [Nn]* )
+                printf "\nDiscogs collection folder update procedure aborted."
+                printf "\nExiting.\n\n"
+                exit 0
+                ;;
+              * ) echo "Please answer yes or no."
+                ;;
+      esac
+    done
+  }
+}
+
 # Check if collection folder exists and if not, create it
-[ "${foldername}" ] && {
+if [ "${foldername}" ]
+then
   folders=$(curl --stderr /dev/null \
     -A "${AGE}" "${FDR}" \
     -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
@@ -132,7 +168,6 @@ REL="${URL}/users/${DISCOGS_USER}/collection/releases"
     if [ "${dryrun}" ]
     then
       echo "Would create new collection folder: ${foldername}"
-      folderid=123
     else
       newfolder=$(curl -X POST --stderr /dev/null \
         -H "Authorization: Discogs token=${DISCOGS_TOKEN}" \
@@ -144,11 +179,11 @@ REL="${URL}/users/${DISCOGS_USER}/collection/releases"
       folderid=`echo "${newfolder}" | jq -r '.id'`
     fi
   }
-}
+else
+  foldername="Uncategorized"
+fi
 
-[ ${folderid} -eq 1 ] && foldername="Uncategorized"
-
-echo "Adding albums to Discogs user ${DISCOGS_USER} collection folder ${foldername}"
+echo "Adding albums to Discogs user \"${DISCOGS_USER}\" collection folder \"${foldername}\""
 echo "Please be patient. A large number of albums may take a while."
 
 add_releases() {
@@ -178,7 +213,12 @@ add_releases() {
         awk -F ':' ' { print $2 } ' | sed -e 's/^ *//' -e 's/ *$//'`
     }
     [ "${quiet}" ] || {
-      printf "\nAdding album \"${title}\" by ${artist}"
+      if [ "${dryrun}" ]
+      then
+        printf "\nWould add album \"${title}\" by ${artist}"
+      else
+        printf "\nAdding album \"${title}\" by ${artist}"
+      fi
       printf "\n\tto Discogs collection folder ${foldername}"
     }
     [ "${dryrun}" ] || {

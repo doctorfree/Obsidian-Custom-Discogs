@@ -112,6 +112,7 @@ TOOLS="${GRANDP}/Tools/Discogs"
 ASSETS="${GRANDP}/assets"
 ARTISTS="${ASSETS}/artists"
 OUT="${GRANDP}/${VAULT}_Artists.md"
+OUT=`echo "${OUT}" | sed -e "s/ /_/g"`
 
 URL="https://api.discogs.com"
 ART="${URL}/artists"
@@ -143,14 +144,14 @@ else
 fi
 echo "Please be patient. A large Discogs collection or library may take a while."
 
-[ -f ${OUT} ] || {
+[ -f "${OUT}" ] || {
   mkartists=1
-  echo "# Artists" > ${OUT}
-  echo "" >> ${OUT}
-  echo "## Artists in ${VAULT}" >> ${OUT}
-  echo "" >> ${OUT}
-  echo "| **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** |" >> ${OUT}
-  echo "|--|--|--|--|--|" >> ${OUT}
+  echo "# Artists" > "${OUT}"
+  echo "" >> "${OUT}"
+  echo "## Artists in ${VAULT}" >> "${OUT}"
+  echo "" >> "${OUT}"
+  echo "| **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** | **Artist Name** |" >> "${OUT}"
+  echo "|--|--|--|--|--|" >> "${OUT}"
 }
 
 for artist in *
@@ -287,10 +288,10 @@ do
       [ "${artistname}" ] && {
         if [ ${numcols} -gt 4 ]
         then
-          printf "| [${artistname}](${VAULT}/${artist}/${artistpage}.md) |\n" >> ${OUT}
+          printf "| [${artistname}](${VAULT}/${artist}/${artistpage}.md) |\n" >> "${OUT}"
           numcols=1
         else
-          printf "| [${artistname}](${VAULT}/${artist}/${artistpage}.md) " >> ${OUT}
+          printf "| [${artistname}](${VAULT}/${artist}/${artistpage}.md) " >> "${OUT}"
           numcols=$((numcols+1))
         fi
       }
@@ -301,9 +302,9 @@ done
 [ "${mkartists}" ] && {
   while [ ${numcols} -lt 4 ]
   do
-    printf "| " >> ${OUT}
+    printf "| " >> "${OUT}"
     numcols=$((numcols+1))
   done
-  printf "|\n" >> ${OUT}
+  printf "|\n" >> "${OUT}"
 }
 ```

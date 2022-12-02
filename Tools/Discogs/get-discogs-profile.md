@@ -93,6 +93,9 @@ values=$(curl --stderr /dev/null \
 minimum=`echo ${values} | jq '.minimum' | sed -e "s/\"//g"`
 median=`echo ${values} | jq '.median' | sed -e "s/\"//g"`
 maximum=`echo ${values} | jq '.maximum' | sed -e "s/\"//g"`
+[ "${minimum}" == "null" ] && minimum=
+[ "${median}" == "null" ] && median=
+[ "${maximum}" == "null" ] && maximum=
 
 filename="${DUSER}_Discogs_User_Profile.md"
 echo "# ${DUSER} Discogs User Profile" > "${filename}"
@@ -102,11 +105,19 @@ echo "" >> "${filename}"
   echo "" >> "${filename}"
 }
 echo "" >> "${filename}"
-echo "## Discogs user ${DISCOGS_USER} collection value" >> "${filename}"
-echo "" >> "${filename}"
-echo "| **Minimum** | **Median** | **Maximum** |" >> "${filename}"
-echo "|-------------|------------|-------------|" >> "${filename}"
-echo "| ${minimum} | ${median} | ${maximum} |" >> "${filename}"
+
+showvalue=
+[ "${minimum}" ] || [ "${median}" ] || [ "${maximum}" ] && showvalue=1
+
+[ "${showvalue}" ] && {
+  echo "## Discogs user ${DISCOGS_USER} collection value" >> "${filename}"
+  echo "" >> "${filename}"
+  echo "| **Minimum** | **Median** | **Maximum** |" >> "${filename}"
+  echo "|-------------|------------|-------------|" >> "${filename}"
+  echo "| ${minimum} | ${median} | ${maximum} |" >> "${filename}"
+  echo "" >> "${filename}"
+
+}
 echo "## Discogs user ${DISCOGS_USER} profile" >> "${filename}"
 echo "" >> "${filename}"
 
@@ -124,6 +135,11 @@ buyer_rating=`echo ${profile} | jq '.buyer_rating' | sed -e "s/\"//g"`
 buyer_rating_stars=`echo ${profile} | jq '.buyer_rating_stars' | sed -e "s/\"//g"`
 seller_rating=`echo ${profile} | jq '.seller_rating' | sed -e "s/\"//g"`
 seller_rating_stars=`echo ${profile} | jq '.seller_rating_stars' | sed -e "s/\"//g"`
+
+[ "${name}" == "null" ] && name=
+[ "${home_page}" == "null" ] && home_page=
+[ "${location}" == "null" ] && location=
+[ "${email}" == "null" ] && email=
 
 echo "Discogs user **${DISCOGS_USER}** has the following profile:" >> "${filename}"
 echo "" >> "${filename}"

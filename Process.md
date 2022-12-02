@@ -95,31 +95,48 @@ For example, to generate markdown for the albums and artists in `/u/audio/jazz` 
 
 **[NEW FEATURE]** Obsidian Custom Discogs now supports adding vault items to a Discogs user collection. After generating an Obsidian Custom Discogs vault from a local music library, the resulting markdown can be used to add those albums and artists to your Discogs collection.
 
-To add albums and artists to a Discogs user collection, cd into the `Tools/Discogs` folder and run the `albums2discogs` command. For example, if `Setup -L /path/to/library` were previously run and the vault folder `Music_Library` created with generated markdown for the artists, albums, and tracks in `/path/to/library` then those artists and albums can be added to a Discogs user collection folder with:
+To add albums and artists to a Discogs user collection, run the `./Setup -A ...` command. For example, if `Setup -L /path/to/library -v "Vinyl Rips"` were previously run and the vault folder `Vinyl Rips` created with generated markdown for the artists, albums, and tracks in `/path/to/library` then those artists and albums can be added to a Discogs user collection folder with:
 
 ```shell
-cd Tools/Discogs
-./albums2discogs -h  # Display the help message
-./albums2discogs -n -v Music_Library -f "Music Library"  # Perform a dry-run
-./albums2discogs -q -v Music_Library -f "Music Library"
+# Perform a dry-run
+./Setup -A -n -v "Vinyl Rips" -f "Vinyl"
+# Create a Discogs collection folder named "Vinyl" and add all releases
+# in the local "Vinyl Rips" folder to the "Vinyl" Discogs collection folder
+./Setup -A -v "Vinyl Rips" -f "Vinyl"
 ```
 
-You can examine the source code for the [albums2discogs command](Tools/Discogs/albums2discogs.md).
+The `./Setup -A ...` command runs the `Tools/Discogs/albums2discogs` command. You can examine the source code for the [albums2discogs command](Tools/Discogs/albums2discogs.md).
 
 ## Usage
 
 The `Setup` command has the following output from `./Setup -h`:
 
 ```console
-Usage: ./Setup [-L /path/to/library] [-v vault] [-R] [-U] [-t token] [-u user] [-h]
+Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnq]
 Where:
 	-L 'path' indicates use a local music library rather than Discogs collection
 	-R indicates remove intermediate JSON created during previous run
 	-U indicates perform an update of the Discogs collection
+	-A indicates add existing vault folder releases to a Discogs collection
+		Vault folder is specified with '-v vault'
+		Vault folder previously created with './Setup -L /path/to/library'
+		Can be used with '-f foldername' to specify collection folder
+	-f 'foldername' specifies the Discogs collection folder name to use.
+		Only used in conjunction with '-A' (add releases to Discogs collection).
+		If no folder by this name exists, one will be created.
+		Default: Uncategorized
+	-e displays example usage and exits
+	-n indicates perform a dry run (only used in conjunction with '-A')
+	-q indicates quiet mode (only used in conjunction with '-A')
 	-t 'token' specifies the Discogs API token
 	-u 'user' specifies the Discogs username
 	-v 'vault' specifies the folder name for generated artist/album markdown
 	-h displays this usage message and exits
+```
+
+Example invocations of the `Setup` command can be displayed with `./Setup -e`:
+
+```console
 Example invocations:
 	# Retrieve Discogs collection
 	# Generated markdown in capitalized Discogs username folder
@@ -134,29 +151,12 @@ Example invocations:
 	./Setup -L ~/Music -u doctorfree -t xyzkdkslekjrelrkek
 	# Retrieve Discogs data for genre local music library in /u/jazz
 	./Setup -L /u/jazz -v Jazz
-```
-
-The `albums2discogs` command has the following output from `./albums2discogs -h`:
-
-```console
-Usage: albums2discogs [-f foldername] [-u username] [-t token] [-v vault] [-hnq]
-Where:
-	-f 'foldername' specifies the Discogs collection folder name to use.
-		If no folder by this name exists, one will be created.
-		Default: Uncategorized
-	-u 'username' specifies your Discogs username.
-	-t 'token' specifies your Discogs API token.
-	-v 'vault' specifies vault folder name for input markdown.
-		The albums in this vault folder will be added to the Discogs collection.
-		If no vault folder is given then all vault folders will be added.
-	-n indicates perform a dry run, tell me what you would do but do nothing
-	-q indicates quiet mode, so not display each album added
-	-h displays this usage message and exits.
-
-A Discogs username is required.
-A Discogs username and token can be added to ~/.config/mpprc as the variables
-	DISCOGS_USER and DISCOGS_TOKEN
-or specified on the command line with '-u username' and '-t token'
+	# Add existing vault releases to Discogs collection folder
+	# From a previously generated run of './Setup -L /path/to/library'
+	# Perform a dry run:
+	./Setup -n -A -f MyMusic -v Music_Library
+	# Add releases from Music_Library folder to Discogs collection MyMusic:
+	./Setup -A -f MyMusic -v Music_Library
 ```
 
 ## Updates
