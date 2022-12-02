@@ -9,6 +9,8 @@
     * Can use existing collection folder or create new folder
     * Checks if release already exists in collection
 * Fix artist links when artist name has spaces
+* Add support for adding releases to Discogs collection in Setup
+* Add support for vault and collection folder names with spaces
 
 ## Version 1.0.2 Release 1
 
