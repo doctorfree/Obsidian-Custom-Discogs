@@ -2,6 +2,13 @@
 
 The Obsidian Custom Discogs repository provides an automated workflow to generate markdown format files from [Discogs](https://discogs.com) user collections and local music libraries using the Discogs API.
 
+Command line support for automated procedures to:
+
+- ***Generate markdown from a Discogs user collection***
+- ***Generate markdown from a local music library***
+- ***Add releases from markdown to a Discogs collection folder***
+- ***Remove releases from a Discogs collection folder***
+
 Discogs (short for discographies) is a database of information about audio recordings, including commercial releases, promotional releases, and bootleg or off-label releases.  As of 19 November 2022, Discogs contains over 15.7 million releases, by over 8.3 million artists, across over 1.9 million labels, contributed from over 644,000 contributor user accounts - with these figures constantly growing as users continually add previously unlisted releases to the site over time.
 
 The automated workflow provided in this repository utilizes the Discogs API to access this rich source of data on music releases and artists, retrieve it, and transform it into a format suitable for human consumption and display.
