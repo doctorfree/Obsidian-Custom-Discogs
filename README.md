@@ -123,13 +123,13 @@ The `Setup` command has the following output from `Setup -h`:
 Usage: ./Setup [-L /path/to/library] [-A] [-f foldername] [-v vault] [-R] [-U] [-t token] [-u user] [-ehnqr]
 Where:
 	-A indicates add existing vault folder releases to a Discogs collection
+		Vault folder is specified with '-v vault'
+		Vault folder previously created with './Setup -L /path/to/library'
+		Can be used with '-f foldername' to specify collection folder
 	-R indicates remove items from specified Discogs collection folder
 		Must be accompanied by '-f foldername'
 	-L 'path' indicates use a local music library rather than Discogs collection
 	-U indicates perform an update of the Discogs collection
-		Vault folder is specified with '-v vault'
-		Vault folder previously created with './Setup -L /path/to/library'
-		Can be used with '-f foldername' to specify collection folder
 	-f 'foldername' specifies the Discogs collection folder name to use.
 		Only used in conjunction with '-A' (add releases to Discogs collection).
 		If no folder by this name exists, one will be created.
