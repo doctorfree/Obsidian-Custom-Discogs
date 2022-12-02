@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.0.2 Release 2
+
+* Support for adding releases to a Discogs collection
+    * From previous `Setup -L /path/to/library` generated markdown
+    * Can specify collection folder name 
+    * Can specify local input folder name 
+    * Can use existing collection folder or create new folder
+    * Checks if release already exists in collection
+* Fix artist links when artist name has spaces
+
 ## Version 1.0.2 Release 1
 
 * Add support for generation of markdown from a local library using Discogs API
