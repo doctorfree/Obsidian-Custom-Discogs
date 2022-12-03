@@ -244,13 +244,16 @@ do
       echo "## Artist Profile" >> /tmp/au$$
       echo "" >> /tmp/au$$
       description=`echo ${artist_profile} | jq -r '.profile_plaintext'`
-      echo "${description}" >> /tmp/au$$
-      echo "" >> /tmp/au$$
+      [ "${description}" == "null" ] || {
+        echo "${description}" >> /tmp/au$$
+        echo "" >> /tmp/au$$
+      }
 
       echo "## Artist Links" >> /tmp/au$$
       echo "" >> /tmp/au$$
       while read url
       do
+        [ "${url}" == "null" ] || [ "${url}" == "" ] && continue
         echo "- [${url}](${url})" >> /tmp/au$$
       done < <(echo ${artist_profile} | jq -r '.urls[]?')
       echo "" >> /tmp/au$$

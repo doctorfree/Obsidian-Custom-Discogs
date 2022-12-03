@@ -158,6 +158,8 @@ make_release_markdown() {
         jq -r '.' > "${RELOUT}/${releaseid}/${releaseid}.json"
       sleep 1
     }
+    message=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.message'`
+    echo "${message}" | grep "Release not found" > /dev/null && continue
 
     [ -s "${RELOUT}/${releaseid}/${releaseid}_genres.json" ] || {
       cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.genres[]?' > \
@@ -228,7 +230,7 @@ make_release_markdown() {
       [ -f "${TOP}/${artistname}/${markdown}" ] && generate=
     }
     [ "${generate}" ] && {
-      label=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.labels[].name'`
+      label=`cat "${RELOUT}/${releaseid}/${releaseid}.json" | jq -r '.labels[0].name'`
 
       echo "Generating markdown for ${artist} / ${title}"
       echo "---" > "${markdown}"
@@ -425,8 +427,17 @@ do
   [ "${artist}" == "*" ] && continue
   [ -d "${artist}" ] || continue
   cd "${artist}"
+  style_search=
   case "${artist}" in
-    Soundtrack*|Compilation*|Various*|Soundcloud|Bandcamp|Unknown|Unknown*Artist)
+    Soundtrack*)
+      noartist=1
+      style_search="Soundtrack"
+      ;;
+    Compilation*|Various*)
+      noartist=
+      artist="Various"
+      ;;
+    Soundcloud|Bandcamp|Unknown|Unknown*Artist)
       noartist=1
       ;;
     *)
@@ -446,7 +457,12 @@ do
     }
     if [ "${noartist}" ]
     then
-      SEARCH_URL="${SRL}?release_title=${title_search}&format=Album"
+      if [ "${style_search}" ]
+      then
+        SEARCH_URL="${SRL}?style=${style_search}&release_title=${title_search}&format=Album"
+      else
+        SEARCH_URL="${SRL}?release_title=${title_search}&format=Album"
+      fi
     else
       SEARCH_URL="${SRL}?release_title=${title_search}&artist=${artist_search}&format=Album"
     fi
@@ -457,8 +473,38 @@ do
       -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
       jq -r '.results[0]?')
     sleep 1
-    [ "${release}" ] || continue
-    [ "${release}" == "null" ] && continue
+    [ "${release}" == "null" ] || [ "${release}" == "" ] && {
+      # Try again with modified artist/title
+      artist_search=`echo ${artist} | sed -e "s/_/ /g" -e "s/ And / \& /g"`
+      artist_search=`urlencode "${artist_search}"`
+      title_search=`echo "${album}" | \
+        sed -e "s/_/ /g" \
+            -e "s/ Disc [0-9]//" \
+            -e "s/\(Expanded \& Remastered\)//" \
+            -e "s/\(Remastered\)//" \
+            -e "s/\[Explicit\]//" \
+            -e "s/\(DELUXE\)//" \
+            -e "s/\(Remixes\)//"`
+      title_search=`echo "${title_search}" | sed -e 's/^ *//' -e 's/ *$//'`
+      title_search=`urlencode "${title_search}"`
+      if [ "${noartist}" ]
+      then
+        if [ "${style_search}" ]
+        then
+          SEARCH_URL="${SRL}?style=${style_search}&release_title=${title_search}&format=Album"
+        else
+          SEARCH_URL="${SRL}?release_title=${title_search}&format=Album"
+        fi
+      else
+        SEARCH_URL="${SRL}?release_title=${title_search}&artist=${artist_search}&format=Album"
+      fi
+      release=$(curl --stderr /dev/null \
+        -A "${AGE}" "${SEARCH_URL}" \
+        -H "Authorization: Discogs token=${DISCOGS_TOKEN}" | \
+        jq -r '.results[0]?')
+      sleep 1
+      [ "${release}" == "null" ] || [ "${release}" == "" ] && continue
+    }
     echo "${release}" > "${OUT}/${artist}_${album}.json"
   done
   cd ..
