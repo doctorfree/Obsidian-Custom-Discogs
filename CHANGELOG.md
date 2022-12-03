@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.2 Release 3
+
+* Improve artist/album search with Discogs API search query
+* URL encode search strings in search-albums-markdown
+* Corrected Setup usage message
+
 ## Version 1.0.2 Release 2
 
 * Support for adding releases to a Discogs collection
