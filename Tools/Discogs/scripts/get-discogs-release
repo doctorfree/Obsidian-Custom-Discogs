@@ -3,7 +3,8 @@
 # get-discogs-release
 #
 #release_id=272144
-release_id=3663971
+#release_id=3663971
+release_id=2262448
 
 # Get a Discogs API token
 [ -f "${HOME}/.config/mpprc" ] && . "${HOME}/.config/mpprc"

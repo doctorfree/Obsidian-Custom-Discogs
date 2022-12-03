@@ -109,6 +109,22 @@ echo ""
   mkdir -p "${coverfolder}"
 }
 
+# From https://gist.github.com/cdown/1163649
+urlencode() {
+  old_lc_collate=$LC_COLLATE
+  LC_COLLATE=C
+  local length="${#1}"
+  for (( i = 0; i < length; i++ ))
+  do
+    local c="${1:$i:1}"
+    case $c in
+        [a-zA-Z0-9.~_-]) printf '%s' "$c" ;;
+        *) printf '%%%02X' "'$c" ;;
+    esac
+  done
+  LC_COLLATE=$old_lc_collate
+}
+
 make_release_markdown() {
   for release_json in "${OUT}"/*.json
   do
@@ -409,16 +425,31 @@ do
   [ "${artist}" == "*" ] && continue
   [ -d "${artist}" ] || continue
   cd "${artist}"
-  artistname=`echo ${artist} | sed -e "s/_/%20/g" -e "s/ /%20/g"`
+  case "${artist}" in
+    Soundtrack*|Compilation*|Various*|Soundcloud|Bandcamp|Unknown|Unknown*Artist)
+      noartist=1
+      ;;
+    *)
+      noartist=
+      ;;
+  esac
+  artist_search=`echo ${artist} | sed -e "s/_/ /g"`
+  artist_search=`urlencode "${artist_search}"`
   for album in *
   do
     [ "${album}" == "*" ] && continue
     [ -d "${album}" ] || continue
-    title=`echo "${album}" | sed -e "s/_/%20/g" -e "s/ /%20/g"`
+    title_search=`echo "${album}" | sed -e "s/_/ /g"`
+    title_search=`urlencode "${title_search}"`
     [ -f "${OUT}/${artist}_${album}.json" ] && {
       [ "${overwrite}" ] || continue
     }
-    SEARCH_URL="${SRL}?release_title=${title}&artist=${artistname}&format=Album"
+    if [ "${noartist}" ]
+    then
+      SEARCH_URL="${SRL}?release_title=${title_search}&format=Album"
+    else
+      SEARCH_URL="${SRL}?release_title=${title_search}&artist=${artist_search}&format=Album"
+    fi
 
     # Retrieve master release matching search criteria
     release=$(curl --stderr /dev/null \
