@@ -160,7 +160,7 @@ while getopts "AL:RUf:t:u:v:ehnqr" flag; do
             add2discogs=1
             ;;
         f)
-            foldername="$OPTARG"
+            foldername="${OPTARG}"
             ;;
         n)
             dryrun="-n"
@@ -323,8 +323,20 @@ then
 else
   if [ "${add2discogs}" ]
   then
-    ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
-                     -v "${VAULT}" -f "${foldername}" ${dryrun} ${quiet}
+    if [ "${VAULT}" ] && [ "${foldername}" ]
+    then
+      ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
+                       -v "${VAULT}" -f "${foldername}" ${dryrun} ${quiet}
+    else
+      if [ "${VAULT}" ]
+      then
+        ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
+                         -v "${VAULT}" ${dryrun} ${quiet}
+      else
+        ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
+                         ${dryrun} ${quiet}
+      fi
+    fi
   else
     if [ "${remove}" ]
     then

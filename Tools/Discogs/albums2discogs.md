@@ -144,9 +144,9 @@ REL="${URL}/users/${DISCOGS_USER}/collection/releases"
     fi
     if [ "${remove}" ]
     then
-      printf "\nDeleting releases in Discogs user \"${DISCOGS_USER}\" collection folder \"${fname}\"."
+      printf "\nDeleting releases in Discogs user \"${DISCOGS_USER}\" collection folder ${fname}"
     else
-      printf "\nAdding releases to Discogs user \"${DISCOGS_USER}\" collection folder \"${fname}\"."
+      printf "\nAdding releases to Discogs user \"${DISCOGS_USER}\" collection folder ${fname}"
     fi
     printf "\nThis procedure will modify your Discogs account.\n\n"
     while true
@@ -324,7 +324,7 @@ else
   if [ "${vault}" ]
   then
     [ -d "${vault}" ] || {
-      echo "Cannot locate vault folder ${vault}"
+      echo "Cannot locate vault folder \"${vault}\""
       echo "Exiting without adding any releases to the Discogs collection."
       usage
     }
