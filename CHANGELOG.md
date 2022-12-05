@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.2 Release 4
+
+* Handle vault and folder name args to support spaces in names
+* Only pass vault and folder args if set
+* Add configuration for Obsidian graph view to ignore Tools/Discogs/json/
+
 ## Version 1.0.2 Release 3
 
 * Improve artist/album search with Discogs API search query
