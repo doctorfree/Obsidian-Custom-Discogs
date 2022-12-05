@@ -321,7 +321,7 @@ else
   if [ "${vault}" ]
   then
     [ -d "${vault}" ] || {
-      echo "Cannot locate vault folder ${vault}"
+      echo "Cannot locate vault folder \"${vault}\""
       echo "Exiting without adding any releases to the Discogs collection."
       usage
     }
