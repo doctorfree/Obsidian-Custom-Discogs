@@ -320,8 +320,12 @@ then
 else
   if [ "${add2discogs}" ]
   then
+    vaultarg=
+    [ "${VAULT}" ] && vaultarg="-v \"${VAULT}\""
+    folderarg=
+    [ "${foldername}" ] && folderarg="-f \"${foldername}\""
     ./albums2discogs -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
-                     -v "${VAULT}" -f "${foldername}" ${dryrun} ${quiet}
+                     ${vaultarg} ${folderarg} ${dryrun} ${quiet}
   else
     if [ "${remove}" ]
     then
