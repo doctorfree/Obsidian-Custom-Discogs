@@ -61,7 +61,7 @@ DUSER="${DISCOGS_USER^}"
 URL="https://api.discogs.com"
 USR="${URL}/users/${DISCOGS_USER}"
 VAL="${URL}/users/${DISCOGS_USER}/collection/value"
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 
 # Retrieve user profile
 if [ "${usetoken}" ]

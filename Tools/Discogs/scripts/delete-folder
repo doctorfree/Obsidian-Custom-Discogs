@@ -18,7 +18,7 @@
 
 URL="https://api.discogs.com"
 FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 folderid="5191225"
 
 [ -d json ] || mkdir json

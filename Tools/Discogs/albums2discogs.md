@@ -39,7 +39,7 @@ DISCOGS_TOKEN=
 # are not available to unauthenticated users.
 
 URL="https://api.discogs.com"
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 
 # Dot in the user configuration file if it exists
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc

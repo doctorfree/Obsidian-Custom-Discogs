@@ -9,7 +9,7 @@
 # or a local music library using the Discogs API to retrieve artist/album info
 
 URL="https://api.discogs.com"
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 LOCAL=
 UPD=
 VAULT=

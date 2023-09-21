@@ -8,7 +8,7 @@ artist_id=272144
 URL="https://api.discogs.com"
 ART="${URL}/artists"
 
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 REL="${URL}/artists/${artist_id}/releases?year"
 
 [ -d json ] || mkdir json

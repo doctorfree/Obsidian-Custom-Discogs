@@ -18,7 +18,7 @@ release_id=2262448
 
 URL="https://api.discogs.com"
 REL="${URL}/users/${DISCOGS_USER}/collection/releases/${release_id}"
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 
 [ -d json ] || mkdir json
 

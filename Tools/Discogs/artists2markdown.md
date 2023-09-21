@@ -117,7 +117,7 @@ OUT=`echo "${OUT}" | sed -e "s/ /_/g"`
 URL="https://api.discogs.com"
 ART="${URL}/artists"
 
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 
 [ -d "${TOP}" ] || mkdir -p "${TOP}"
 

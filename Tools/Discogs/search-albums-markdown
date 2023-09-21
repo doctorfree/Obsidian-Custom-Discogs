@@ -29,7 +29,7 @@ URL="https://api.discogs.com"
 SRL="${URL}/database/search"
 REL="${URL}/releases"
 MRL="${URL}/masters"
-AGE="github.com/doctorfree/MusicPlayerPlus"
+AGE="ObsidianCustomDiscogs/1.0.2 +https://github.com/doctorfree/Obsidian-Custom-Discogs"
 
 # Dot in the user configuration file if it exists
 [ -f ${HOME}/.config/mpprc ] && . ${HOME}/.config/mpprc
@@ -364,7 +364,7 @@ make_release_markdown() {
       echo "" >> /tmp/__insert__
       cat ${markdown} /tmp/__insert__ > /tmp/foo$$
       cp /tmp/foo$$ ${markdown}
-      rm -f /tmp/foo$$ /tmp/__insert__ 
+      rm -f /tmp/foo$$ /tmp/__insert__
 
       [ -s "${RELOUT}/${releaseid}/${releaseid}_extra.json" ] || {
         cat "${RELOUT}/${releaseid}/${releaseid}.json" | \
