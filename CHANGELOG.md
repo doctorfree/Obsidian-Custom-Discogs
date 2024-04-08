@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.2 Release 6
+
+- Set vault name if none specified in `Setup`
+
 ## Version 1.0.2 Release 5
 
 - Add `wget` to dependencies

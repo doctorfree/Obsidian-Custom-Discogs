@@ -351,6 +351,7 @@ else
       ./albums2discogs -r -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" \
                        -f "${foldername}" ${dryrun} ${quiet}
     else
+      [ "${VAULT}" ] || VAULT="Discogs"
       ./mkdiscogs -a -t "${DISCOGS_TOKEN}" -u "${DISCOGS_USER}" ${UPD} -v "${VAULT}"
     fi
   fi
