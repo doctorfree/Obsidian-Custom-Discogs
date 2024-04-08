@@ -91,7 +91,7 @@ shift $(( OPTIND - 1 ))
   exit 1
 }
 
-DUSERCAP="${DISCOGS_USER^}"
+DUSERCAP="${DISCOGS_USER}"
 DUCAPSTR=`echo "${DUSERCAP}" | sed -e "s/_/ /g"`
 if [ "${vault}" ]
 then

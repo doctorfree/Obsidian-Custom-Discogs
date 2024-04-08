@@ -103,7 +103,7 @@ shift $(( OPTIND - 1 ))
   exit 1
 }
 
-[ "${VAULT}" ] || VAULT="${DISCOGS_USER^}"
+[ "${VAULT}" ] || VAULT="${DISCOGS_USER}"
 HERE=`pwd`
 PARENT=`dirname "${HERE}"`
 GRANDP=`dirname "${PARENT}"`

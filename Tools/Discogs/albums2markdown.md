@@ -102,7 +102,7 @@ shift $(( OPTIND - 1 ))
 }
 
 coverfolder="../../assets/albumcovers"
-[ "${vault}" ] || vault="${DISCOGS_USER^}"
+[ "${vault}" ] || vault="${DISCOGS_USER}"
 TOP="../../${vault}"
 FDR="${URL}/users/${DISCOGS_USER}/collection/folders"
 
