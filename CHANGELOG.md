@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.0.2 Release 5
+
+- Add `wget` to dependencies, fix typo in `mkdiscogs`
+- Modify retry album search query term, removing the year and brackets
+- Change user agent from `MusicPlayerPlus` to `ObsidianCustomDiscogs`
+- Update markdown for `Setup` and `albums2discogs` changes
+
 ## Version 1.0.2 Release 4
 
 * Handle vault and folder name args to support spaces in names
