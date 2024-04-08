@@ -234,6 +234,7 @@ shift $(( OPTIND - 1 ))
 
 have_curl=`type -p curl`
 have_jq=`type -p jq`
+have_wget=`type -p wget`
 
 [ "${have_curl}" ] || {
   printf "\nThe 'curl' utility is required but not found in this user's execution path."
@@ -255,8 +256,18 @@ have_jq=`type -p jq`
   printf "\nOn Mac OS 'jq' can be installed with Homebrew:"
   printf "\n\tbrew install jq\n"
 }
+[ "${have_wget}" ] || {
+  printf "\nThe 'wget' utility is required but not found in this user's execution path."
+  printf "\nVerify that 'wget' is installed and available on this system, add it to PATH,"
+  printf "\nor install 'wget'. On most Linux systems 'wget' can be installed with either:"
+  printf "\n\tsudo apt install wget"
+  printf "\nor"
+  printf "\n\tsudo dnf install wget"
+  printf "\nOn Mac OS 'wget' can be installed with Homebrew:"
+  printf "\n\tbrew install wget\n"
+}
 
-[ "${have_jq}" ] && [ "${have_curl}" ] || {
+[ "${have_jq}" ] && [ "${have_curl}" ] && [ "${have_wget}" ] || {
   printf "\nSystem requirements not met. Exiting without performing setup.\n"
   exit 1
 }

@@ -46,7 +46,7 @@ In order to use the download, conversion, creation, and curation process utilize
 
 Your Discogs username and API token are required to perform some of the API requests sent during the automated vault creation process. See the following section for details on how to configure your system with these credentials.
 
-In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl` and `jq`. On most Linux systems these are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl` and `sudo apt install jq` or `sudo dnf install jq`.
+In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl`, `jq`, and `wget`. On most Linux systems these are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl`, `sudo apt install wget` or `sudo dnf install wget`, and `sudo apt install jq` or `sudo dnf install jq`. On macOS these can be installed with Homebrew.
 
 ## Setup
 
