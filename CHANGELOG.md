@@ -2,7 +2,8 @@
 
 ## Version 1.0.2 Release 5
 
-- Add `wget` to dependencies, fix typo in `mkdiscogs`
+- Add `wget` to dependencies
+- Fix typo in `DISCOGS_USER` in `Tools/Discogs/` scripts and markdown
 - Modify retry album search query term, removing the year and brackets
 - Change user agent from `MusicPlayerPlus` to `ObsidianCustomDiscogs`
 - Update markdown for `Setup` and `albums2discogs` changes
