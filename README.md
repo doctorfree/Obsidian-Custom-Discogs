@@ -32,6 +32,7 @@ See the [description of Process](Process.md) for an overview of the process and 
 
 ## Quickstart
 
+- Install the dependencies if not already present (`curl`, `jq`, `wget`, and `convert` from ImageMagick)
 - [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.2r6.tar.gz)
 - Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.2r6.tar.gz`
 - Set the Discogs username (`DISCOGS_USER`) and API token (`DISCOGS_TOKEN`) in `$HOME/.config/mpprc`
@@ -46,7 +47,9 @@ In order to use the download, conversion, creation, and curation process utilize
 
 Your Discogs username and API token are required to perform some of the API requests sent during the automated vault creation process. See the following section for details on how to configure your system with these credentials.
 
-In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl`, `jq`, and `wget`. On most Linux systems these are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl`, `sudo apt install wget` or `sudo dnf install wget`, and `sudo apt install jq` or `sudo dnf install jq`. On macOS these can be installed with Homebrew.
+In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl`, `jq`, `convert` from `ImageMagick`, and `wget`. On most Linux systems `curl`, `jq`, and `wget` are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl`, `sudo apt install wget` or `sudo dnf install wget`, and `sudo apt install jq` or `sudo dnf install jq`. On macOS these can be installed with Homebrew.
+
+`ImageMagick` is required for cover art image format conversion. It can be installed with Homebrew on `macOS` with `brew install imagemagick` and on Linux systems with the native package manager, e.g. on Ubuntu `sudo apt install imagemagick`.
 
 ## Setup
 

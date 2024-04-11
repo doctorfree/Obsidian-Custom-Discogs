@@ -32,11 +32,24 @@ These are the release notes for Version 1.0.2 Release 4 of the Obsidian Custom D
 
 ## Quickstart
 
-1. [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.2r6.tar.gz)
-2. Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.2r6.tar.gz`
-3. Set the Discogs username (`DISCOGS_USER`) and API token (`DISCOGS_TOKEN`) in `$HOME/.config/mpprc`
-4. Customize the vault by running `./Setup` in the vault folder
-5. Open the vault in Obsidian via "Open another vault -> Open folder as vault"
+- Install the dependencies if not already present (`curl`, `jq`, `wget`, and `convert` from ImageMagick)
+- [Download the vault](https://github.com/doctorfree/Obsidian-Custom-Discogs/archive/refs/tags/v1.0.2r6.tar.gz)
+- Extract the vault: `tar xf /path/to/Obsidian-Custom-Discogs-1.0.2r6.tar.gz`
+- Set the Discogs username (`DISCOGS_USER`) and API token (`DISCOGS_TOKEN`) in `$HOME/.config/mpprc`
+- Customize the vault by running `./Setup` in the vault folder:
+    - `./Setup` for a Discogs user collection
+    - `./Setup -L /path/to/library` for a local music library
+- Open the vault in Obsidian via "Open another vault -> Open folder as vault"
+
+## Requirements
+
+In order to use the download, conversion, creation, and curation process utilized by the Obsidian Custom Discogs project a [Discogs](https://discogs.com) account and Discogs API token are required. Account creation can be performed at https://discogs.com by providing a username, password, and email address. After verifying new account creation via email, obtain an API token by logging in to your Discogs account and clicking `Settings -> Developers`. Click the `Generate new token` button and copy the generated token.
+
+Your Discogs username and API token are required to perform some of the API requests sent during the automated vault creation process. See the following section for details on how to configure your system with these credentials.
+
+In addition to the standard Unix/Linux utilities, the download and conversion tools require `curl`, `jq`, `convert` from `ImageMagick`, and `wget`. On most Linux systems `curl`, `jq`, and `wget` are either pre-installed or can be installed by a system administrator with `sudo apt install curl` or `sudo dnf install curl`, `sudo apt install wget` or `sudo dnf install wget`, and `sudo apt install jq` or `sudo dnf install jq`. On macOS these can be installed with Homebrew.
+
+`ImageMagick` is required for cover art image format conversion. It can be installed with Homebrew on `macOS` with `brew install imagemagick` and on Linux systems with the native package manager, e.g. on Ubuntu `sudo apt install imagemagick`.
 
 ## Installation
 
